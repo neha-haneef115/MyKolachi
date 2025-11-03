@@ -16,7 +16,7 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
 <section id="home px-10"> 
     <header className="flex flex-col ">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-6 md:px-10 py-4">
+      <nav className="flex items-center justify-between px-6 md:px-10 py-1">
         <h1 className="logo">
           MyKolachi
         </h1>
@@ -31,7 +31,7 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
     <li key={item.name}>
       <a
         href={item.href}
-        className="px-4 py-2 rounded-full text-[15px] tracking-wide text-[#F2E9E2] hover:bg-[#F2E9E233] transition-all duration-300"
+        className="px-4 py-2 text-[15px] tracking-wide text-[#F2E9E2] hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-3/5 hover:after:left-[20%]"
       >
         {item.name}
       </a>

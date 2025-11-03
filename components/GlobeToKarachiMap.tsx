@@ -174,6 +174,7 @@ const ThreeScene: React.FC<{ phase: AnimationPhase }> = ({ phase }) => {
 const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({ onZoomStart, visible }) => {
   const globeRef = useRef<HTMLDivElement | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [hasTriggered, setHasTriggered] = useState(false);
 
   useEffect(() => {
     if (!visible || typeof window === 'undefined' || !globeRef.current) return;
@@ -273,9 +274,12 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           console.warn('Controls not available');
         }
 
-        setTimeout(() => {
-          handleZoomToKarachi();
-        }, 6000);
+        if (!hasTriggered) {
+          setHasTriggered(true);
+          setTimeout(() => {
+            handleZoomToKarachi();
+          }, 6000);
+        }
 
         const handleZoomToKarachi = () => {
           if (isTransitioning) return;
@@ -306,7 +310,8 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
         };
 
         const handleClick = () => {
-          if (!isTransitioning) {
+          if (!isTransitioning && !hasTriggered) {
+            setHasTriggered(true);
             handleZoomToKarachi();
           }
         };
@@ -399,7 +404,7 @@ const TypingText: React.FC = () => {
           {line}
           {index === currentLineIndex && currentCharIndex === line.length && (
             <span 
-              className="inline-block w-0.5 h-5 ml-1 animate-pulse" 
+              className="inline-block w-0.5 h-4 ml-1 animate-pulse" 
               style={{ backgroundColor: '#943204' }}
             />
           )}
@@ -468,9 +473,19 @@ const AnimatedSeparator: React.FC = () => {
 function GlobeToKarachiMap() {
   const [phase, setPhase] = useState<AnimationPhase>('globe');
   const [loaded, setLoaded] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
+  // Reset animation state when component mounts
   useEffect(() => {
-    setTimeout(() => setLoaded(true), 100);
+    setPhase('globe');
+    setHasAnimated(false);
+    setLoaded(true);
+    
+    // Cleanup function to reset state when component unmounts
+    return () => {
+      setPhase('globe');
+      setHasAnimated(false);
+    };
   }, []);
 
   const handleZoomStart = () => {
@@ -708,21 +723,17 @@ function GlobeToKarachiMap() {
             transition: 'opacity 1.2s ease-out 0.2s, transform 1.2s ease-out 0.2s'
           }}
         >
-          {/* Subtle Radial Glow Behind Globe */}
-          
-          {phase === 'globe' && (
+          {phase === 'globe' && !hasAnimated ? (
             <div className="w-full h-full flex items-center justify-center -translate-x-90">
-              <GlobeOverlay onZoomStart={handleZoomStart} visible={phase === 'globe'} />
+              <GlobeOverlay onZoomStart={handleZoomStart} visible={true} />
             </div>
-          )}
-
-          {showCanvas && (
+          ) : (
             <div style={{ 
               position: 'absolute',
               top: '45%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '550px', 
+              width: '550px',
               height: '550px',
               overflow: 'visible',
               zIndex: 10
@@ -735,10 +746,7 @@ function GlobeToKarachiMap() {
               </Canvas>
             </div>
           )}
-
-          
         </div>
-
       </div>
 
       {/* Enhanced Bottom Info Bar - Futuristic Dashboard */}
@@ -880,6 +888,6 @@ function GlobeToKarachiMap() {
       `}</style>
     </div>
   );
-}
+};
 
 export default GlobeToKarachiMap;
