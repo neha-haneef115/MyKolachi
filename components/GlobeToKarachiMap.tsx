@@ -387,7 +387,7 @@ const TypingText: React.FC = () => {
       {displayedLines.map((line, index) => (
         <div
           key={index}
-          className="text-lg font-light leading-relaxed"
+          className="text-md font-light leading-[17px]"
           style={{
             color: '#F2E9E2',
             fontFamily: 'Inter Tight, sans-serif',
@@ -404,6 +404,61 @@ const TypingText: React.FC = () => {
           )}
         </div>
       ))}
+    </div>
+  );
+};
+
+// ==================== SYSTEM STATUS INDICATOR ====================
+const SystemStatus: React.FC<{ phase: AnimationPhase }> = ({ phase }) => {
+  const [time, setTime] = useState<string>('--:--:--');
+  const [cpuLoad, setCpuLoad] = useState<number>(0);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('en-US', { hour12: false }));
+    };
+
+    const interval = setInterval(updateTime, 1000);
+    updateTime();
+
+    // Simulate CPU load changes
+    const cpuInterval = setInterval(() => {
+      setCpuLoad(Math.floor(Math.random() * 40) + 10);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(cpuInterval);
+    };
+  }, []);
+
+  return (
+    <div className="flex items-center gap-6 text-xs">
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+        <span style={{ color: 'rgba(242, 233, 226, 0.7)' }}>ONLINE</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span style={{ color: 'rgba(242, 233, 226, 0.5)' }}>CPU:</span>
+        <span style={{ color: '#943204' }}>{cpuLoad}%</span>
+      </div>
+      <div style={{ color: 'rgba(242, 233, 226, 0.5)' }}>{time}</div>
+    </div>
+  );
+};
+
+// ==================== ANIMATED SEPARATOR ====================
+const AnimatedSeparator: React.FC = () => {
+  return (
+    <div className="relative h-4 mx-4">
+      <div 
+        className="w-px h-full"
+        style={{
+          background: 'linear-gradient(180deg, transparent, rgba(148, 50, 4, 0.6), transparent)',
+          animation: 'pulse 2s ease-in-out infinite'
+        }}
+      />
     </div>
   );
 };
@@ -441,60 +496,120 @@ function GlobeToKarachiMap() {
         }} />
       </div>
 
-      {/* Top Header Bar */}
+      {/* Enhanced Top Header Bar - Futuristic Software Interface */}
       <div 
-        className="absolute top-0 left-0 right-0 h-16 border-b flex items-center px-8 z-40"
+        className="absolute top-0 left-0 right-0 h-16 flex items-center px-8 z-40"
         style={{ 
-          borderColor: 'rgba(148, 50, 4, 0.2)',
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 100%)',
-          backdropFilter: 'blur(10px)',
+          background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(8, 8, 10, 0.85) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(148, 50, 4, 0.15)',
+          boxShadow: '0 0 30px rgba(148, 50, 4, 0.1)',
           opacity: loaded ? 1 : 0,
           transition: 'opacity 1s ease-in'
         }}
       >
-        <div className="flex items-center gap-3">
-          <div 
-            className="w-2 h-2 rounded-full animate-pulse" 
-            style={{ 
-              backgroundColor: '#943204',
-              boxShadow: '0 0 8px rgba(148, 50, 4, 0.8)'
-            }} 
-          />
-          <span 
-            className="text-xs font-light tracking-widest uppercase"
-            style={{ 
-              color: '#943204',
-              fontFamily: 'Inter Tight, sans-serif',
-              fontWeight: 300
-            }}
-          >
-            Geospatial Intelligence System
-          </span>
+        {/* System Logo and Title */}
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div 
+              className="w-3 h-3 rounded-sm"
+              style={{ 
+                backgroundColor: '#943204',
+                boxShadow: '0 0 15px rgba(148, 50, 4, 0.6)'
+              }} 
+            />
+            <div 
+              className="absolute -inset-1 rounded-sm border"
+              style={{ 
+                borderColor: 'rgba(148, 50, 4, 0.3)',
+                animation: 'pulse 3s ease-in-out infinite'
+              }}
+            />
+          </div>
+          
+          <div className="flex flex-col">
+            <span 
+              className="text-sm font-medium tracking-widest uppercase"
+              style={{ 
+                color: '#943204',
+                fontFamily: 'Orbitron, monospace',
+                fontWeight: 500,
+                letterSpacing: '0.2em'
+              }}
+            >
+              GEO-SPATIAL OS
+            </span>
+            <span 
+              className="text-xs font-light tracking-wide"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.4)',
+                fontFamily: 'Inter Tight, sans-serif'
+              }}
+            >
+              v2.4.1
+            </span>
+          </div>
         </div>
+
+        <AnimatedSeparator />
+
+        {/* Navigation Status */}
+        <div className="flex items-center gap-6">
+          <div className="flex flex-col">
+            <span 
+              className="text-xs font-light tracking-wide"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.5)',
+                fontFamily: 'Inter Tight, sans-serif'
+              }}
+            >
+              ACTIVE MODE
+            </span>
+            <span 
+              className="text-sm font-medium uppercase"
+              style={{ 
+                color: phase === 'globe' ? '#943204' : '#F2E9E2',
+                fontFamily: 'Orbitron, monospace'
+              }}
+            >
+              {phase === 'globe' ? 'ORBITAL VIEW' : 'TERRAIN ANALYSIS'}
+            </span>
+          </div>
+        </div>
+
         <div className="ml-auto flex items-center gap-8">
-          <span 
-            className="text-xs font-light"
-            style={{ 
-              color: 'rgba(242, 233, 226, 0.4)',
-              fontFamily: 'Inter Tight, sans-serif'
-            }}
-          >
-            MODE: {phase === 'globe' ? 'GLOBAL VIEW' : '3D TERRAIN'}
-          </span>
-          <span 
-            className="text-xs font-light"
-            style={{ 
-              color: 'rgba(242, 233, 226, 0.4)',
-              fontFamily: 'Inter Tight, sans-serif'
-            }}
-          >
-            STATUS: ACTIVE
-          </span>
+          {/* System Metrics */}
+          <div className="flex items-center gap-6">
+            <div className="text-right">
+              <span 
+                className="text-xs font-light block"
+                style={{ 
+                  color: 'rgba(242, 233, 226, 0.4)',
+                  fontFamily: 'Inter Tight, sans-serif'
+                }}
+              >
+                RENDER
+              </span>
+              <span 
+                className="text-sm font-medium"
+                style={{ 
+                  color: '#943204',
+                  fontFamily: 'Orbitron, monospace'
+                }}
+              >
+                {phase === 'globe' ? 'GLOBE-V1' : '3D-MESH'}
+              </span>
+            </div>
+            
+            <AnimatedSeparator />
+            
+            <SystemStatus phase={phase} />
+          </div>
         </div>
       </div>
 
       {/* Main Content Container */}
-      <div className="absolute inset-0 flex pt-16">
+      <div className="absolute inset-0 flex pt-10">
         
         {/* Left Panel - Text Content */}
         <div 
@@ -513,7 +628,7 @@ function GlobeToKarachiMap() {
             }}
           />
 
-          <div className="max-w-xl px-20 relative">
+          <div className="max-w-xl px-5 relative">
             {/* Minimal Frame Corner - Top Left */}
             <div 
               className="absolute -top-4 -left-16 w-12 h-12 border-l border-t"
@@ -525,10 +640,10 @@ function GlobeToKarachiMap() {
             />
 
             <h1 
-              className="text-7xl font-light mb-12 tracking-tight"
+              className="text-7xl font-light  tracking-tight"
               style={{
                 color: '#943204',
-                fontFamily: 'Inter Tight, sans-serif',
+                fontFamily: 'Alumni Sans SC, serif',
                 fontWeight: 300,
                 letterSpacing: '-0.03em',
                 textShadow: '0 0 40px rgba(148, 50, 4, 0.2)'
@@ -539,7 +654,7 @@ function GlobeToKarachiMap() {
 
             {/* Glowing Divider */}
             <div 
-              className="w-24 h-px mb-12"
+              className="w-54 h-px mb-10"
               style={{
                 background: 'linear-gradient(90deg, rgba(148, 50, 4, 0.6), transparent)',
                 boxShadow: '0 0 10px rgba(148, 50, 4, 0.4)'
@@ -549,7 +664,7 @@ function GlobeToKarachiMap() {
             <TypingText />
             
             {/* Coordinates Section */}
-            <div className="mt-12 pt-8 relative">
+            <div className="mt-10 pt-8 relative">
               <div 
                 className="absolute top-0 left-0 w-full h-px"
                 style={{
@@ -593,14 +708,7 @@ function GlobeToKarachiMap() {
           }}
         >
           {/* Subtle Radial Glow Behind Globe */}
-          <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-20 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(148, 50, 4, 0.15) 0%, transparent 70%)',
-              filter: 'blur(40px)'
-            }}
-          />
-
+          
           {phase === 'globe' && (
             <div className="w-full h-full flex items-center justify-center -translate-x-90">
               <GlobeOverlay onZoomStart={handleZoomStart} visible={phase === 'globe'} />
@@ -652,41 +760,141 @@ function GlobeToKarachiMap() {
 
       </div>
 
-      {/* Bottom Info Bar */}
+      {/* Enhanced Bottom Info Bar - Futuristic Dashboard */}
       <div 
-        className="absolute bottom-0 left-0 right-0 h-12 border-t flex items-center justify-between px-8 z-40"
+        className="absolute bottom-0 left-0 right-0 h-12 flex items-center justify-between px-8 z-40"
         style={{ 
-          borderColor: 'rgba(148, 50, 4, 0.2)',
-          background: 'linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 100%)',
-          backdropFilter: 'blur(10px)',
+          background: 'linear-gradient(0deg, rgba(10, 10, 12, 0.95) 0%, rgba(8, 8, 10, 0.85) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid rgba(148, 50, 4, 0.15)',
+          boxShadow: '0 0 30px rgba(148, 50, 4, 0.1)',
           opacity: loaded ? 1 : 0,
           transition: 'opacity 1s ease-in 0.5s'
         }}
       >
-        <span 
-          className="text-[10px] font-light tracking-wider uppercase"
-          style={{ color: 'rgba(242, 233, 226, 0.3)' }}
-        >
-          KARACHI, PAKISTAN
-        </span>
-        <span 
-          className="text-[10px] font-light tracking-wider uppercase"
-          style={{ color: 'rgba(242, 233, 226, 0.3)' }}
-        >
-          REGION: SINDH
-        </span>
-        <span 
-          className="text-[10px] font-light tracking-wider uppercase"
-          style={{ color: 'rgba(242, 233, 226, 0.3)' }}
-        >
-          TERRAIN MODEL: ACTIVE
-        </span>
+        {/* Left Section - Location Data */}
+        <div className="flex items-center gap-8">
+          <div className="flex flex-col">
+            <span 
+              className="text-xs font-light tracking-wider uppercase"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.4)',
+                fontFamily: 'Inter Tight, sans-serif'
+              }}
+            >
+              TARGET LOCATION
+            </span>
+            <span 
+              className="text-sm font-medium"
+              style={{ 
+                color: '#943204',
+                fontFamily: 'Orbitron, monospace'
+              }}
+            >
+              KARACHI, PAKISTAN
+            </span>
+          </div>
+
+          <AnimatedSeparator />
+
+          <div className="flex flex-col">
+            <span 
+              className="text-xs font-light tracking-wider uppercase"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.4)',
+                fontFamily: 'Inter Tight, sans-serif'
+              }}
+            >
+              COORDINATES
+            </span>
+            <span 
+              className="text-sm font-mono"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.7)',
+                fontFamily: 'Inter Tight, monospace'
+              }}
+            >
+              24.8607°N, 67.0011°E
+            </span>
+          </div>
+        </div>
+
+        {/* Center Section - System Data */}
+        <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              <span 
+                className="text-xs font-light"
+                style={{ color: 'rgba(242, 233, 226, 0.6)' }}
+              >
+                DATA STREAM
+              </span>
+            </div>
+            
+            <div className="text-xs font-mono" style={{ color: '#943204' }}>
+              {phase === 'globe' ? 'LIVE_SATELLITE' : 'TERRAIN_MESH'}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section - Technical Info */}
+        <div className="flex items-center gap-8">
+          <div className="flex flex-col text-right">
+            <span 
+              className="text-xs font-light tracking-wider uppercase"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.4)',
+                fontFamily: 'Inter Tight, sans-serif'
+              }}
+            >
+              RESOLUTION
+            </span>
+            <span 
+              className="text-sm font-mono"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.7)',
+                fontFamily: 'Inter Tight, monospace'
+              }}
+            >
+              {phase === 'globe' ? '4K UHD' : '8K 3D'}
+            </span>
+          </div>
+
+          <AnimatedSeparator />
+
+          <div className="flex flex-col text-right">
+            <span 
+              className="text-xs font-light tracking-wider uppercase"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.4)',
+                fontFamily: 'Inter Tight, sans-serif'
+              }}
+            >
+              TIMESTAMP
+            </span>
+            <span 
+              className="text-sm font-mono"
+              style={{ 
+                color: 'rgba(242, 233, 226, 0.7)',
+                fontFamily: 'Inter Tight, monospace'
+              }}
+            >
+              {new Date().toISOString().split('T')[0]}
+            </span>
+          </div>
+        </div>
       </div>
 
       <style jsx>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(8px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 1; }
         }
       `}</style>
     </div>
