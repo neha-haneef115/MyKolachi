@@ -191,8 +191,8 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
-          .atmosphereColor('#943204')
-          .atmosphereAltitude(0.25)
+.atmosphereColor('#3a9bdc') // soft bluish glow
+.atmosphereAltitude(0.2) 
           .pointOfView({ lat: 20, lng: 70, altitude: 2.5 });
 
         const karachi = {
@@ -275,7 +275,7 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
 
         setTimeout(() => {
           handleZoomToKarachi();
-        }, 5000);
+        }, 6000);
 
         const handleZoomToKarachi = () => {
           if (isTransitioning) return;
@@ -350,12 +350,13 @@ const TypingText: React.FC = () => {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
 
   const lines = [
-    'Karachi — The Heart of Pakistan',
-    'Population: Over 20 million',
-    'Area: 591 square kilometers',
-    'Founded: 1729 as a small fishing village "Kolachi"',
-    'Known for: Seaport, diversity, and unstoppable energy',
-    'From the Arabian Sea to skyscrapers — Karachi never sleeps.',
+  'City: Karachi, the pulse of Pakistan',
+'Population: Around 20 million',
+'Area: 591 square kilometers',
+'Founded: 1729 as Kolachi village',
+'Known for: Seaport, culture, and diversity',
+'Spirit: A city that never sleeps'
+
   ];
 
   useEffect(() => {
@@ -390,7 +391,7 @@ const TypingText: React.FC = () => {
           className="text-md font-light leading-[17px]"
           style={{
             color: '#F2E9E2',
-            fontFamily: 'Inter Tight, sans-serif',
+            fontFamily: 'Geist, sans-serif',
             fontWeight: 300,
             animation: 'fadeIn 0.8s ease-in',
           }}
@@ -572,7 +573,7 @@ function GlobeToKarachiMap() {
                 fontFamily: 'Orbitron, monospace'
               }}
             >
-              {phase === 'globe' ? 'ORBITAL VIEW' : 'TERRAIN ANALYSIS'}
+              {phase === 'globe' ? 'ORBITAL VIEW' : '3D CITY MAP'}
             </span>
           </div>
         </div>
@@ -631,7 +632,7 @@ function GlobeToKarachiMap() {
           <div className="max-w-xl px-5 relative">
             {/* Minimal Frame Corner - Top Left */}
             <div 
-              className="absolute -top-4 -left-16 w-12 h-12 border-l border-t"
+              className="absolute -top-8 -left-12 w-12 h-12 border-l border-t"
               style={{ 
                 borderColor: 'rgba(148, 50, 4, 0.3)',
                 opacity: loaded ? 1 : 0,
@@ -640,11 +641,11 @@ function GlobeToKarachiMap() {
             />
 
             <h1 
-              className="text-7xl font-light  tracking-tight"
+              className="text-7xl mb-8 tracking-tight"
               style={{
                 color: '#943204',
-                fontFamily: 'Alumni Sans SC, serif',
-                fontWeight: 300,
+                fontFamily: 'Montserrat, serif',
+                fontWeight: 600,
                 letterSpacing: '-0.03em',
                 textShadow: '0 0 40px rgba(148, 50, 4, 0.2)'
               }}
@@ -718,7 +719,7 @@ function GlobeToKarachiMap() {
           {showCanvas && (
             <div style={{ 
               position: 'absolute',
-              top: '50%',
+              top: '45%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               width: '550px', 
@@ -735,27 +736,7 @@ function GlobeToKarachiMap() {
             </div>
           )}
 
-          {/* Minimal Frame Corners for 3D View */}
-          {phase === 'map-3d' && (
-            <>
-              <div 
-                className="absolute top-1/4 left-1/4 w-8 h-8 border-l border-t"
-                style={{ borderColor: 'rgba(148, 50, 4, 0.3)' }}
-              />
-              <div 
-                className="absolute top-1/4 right-1/4 w-8 h-8 border-r border-t"
-                style={{ borderColor: 'rgba(148, 50, 4, 0.3)' }}
-              />
-              <div 
-                className="absolute bottom-1/4 left-1/4 w-8 h-8 border-l border-b"
-                style={{ borderColor: 'rgba(148, 50, 4, 0.3)' }}
-              />
-              <div 
-                className="absolute bottom-1/4 right-1/4 w-8 h-8 border-r border-b"
-                style={{ borderColor: 'rgba(148, 50, 4, 0.3)' }}
-              />
-            </>
-          )}
+          
         </div>
 
       </div>
@@ -805,7 +786,7 @@ function GlobeToKarachiMap() {
                 fontFamily: 'Inter Tight, sans-serif'
               }}
             >
-              COORDINATES
+              ELEVATION
             </span>
             <span 
               className="text-sm font-mono"
@@ -814,7 +795,7 @@ function GlobeToKarachiMap() {
                 fontFamily: 'Inter Tight, monospace'
               }}
             >
-              24.8607°N, 67.0011°E
+              10m
             </span>
           </div>
         </div>

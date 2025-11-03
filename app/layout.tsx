@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Alumni_Sans_SC, Geist ,Inter_Tight} from "next/font/google";
+import { Alumni_Sans_SC, Geist ,Inter_Tight, Montserrat} from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +17,12 @@ const interTight = Inter_Tight({
   subsets: ["latin"],
   weight: ["200","400", "600", "700"],
   variable: "--font-inter-tight",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["200","400", "600", "700"],
+  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {

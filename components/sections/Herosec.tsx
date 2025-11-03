@@ -20,7 +20,7 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
         <h1 className="logo">
           MyKolachi
         </h1>
-<ul className="hidden md:flex items-center justify-center gap-6 border-[2px] border-[rgba(236,234,234,0.8)] bg-[var(--color-brown)]/45 rounded-full px-4 py-3 mr-10">
+<ul className="hidden md:flex items-center justify-center gap-6 border-[2px] border-[rgba(236,234,234,0.8)] bg-[var(--color-brown)]/60 rounded-full px-4 py-3 mr-10">
   {[
     { name: "Home", href: "#home" },
     { name: "Geography", href: "#geography" },
@@ -78,8 +78,8 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
             </h2>
 
             <div
-              className="mt-4 text-[2rem] sm:text-[1.2rem] md:text-[1.3rem] xl:text-[35px]
-              font-normal leading-[1.2] drop-shadow-md"
+              className="mt-4 text-[30px]
+              font-light leading-[1.2] drop-shadow-md" 
             >
               <TextAnimate animation="slideUp" by="word" duration={1}>
                 A journey through the city&apos;s origins, culture, and the grace
