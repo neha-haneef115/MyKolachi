@@ -1,76 +1,109 @@
-// components/Hero.tsx
-import React from 'react';
-import { TypingAnimation } from "@/components/ui/typing-animation"
-import { TextAnimate } from "@/components/ui/text-animate"
-import { MdDarkMode } from "react-icons/md";
-const Hero: React.FC = () => {
-  return (
-    <div>
-    <header className="px-10 flex flex-col">
+"use client";
+import React from "react";
+import { TypingAnimation } from "@/components/ui/typing-animation";
+import { TextAnimate } from "@/components/ui/text-animate";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+import { HiChevronDoubleDown } from "react-icons/hi";
 
-      <nav className="flex items-center justify-between px-8 py-4 bg-beige-100">
-        <h1 className="logo">MyKolachi</h1>
-       <ul
-  className="flex items-center justify-center gap-10 
-  bg-[#72433033] backdrop-blur-sm rounded-full "
->
+interface HeroProps {
+  isPlaying: boolean;
+  onToggleAudio: () => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
+
+  return (
+<section id="home px-10"> 
+    <header className="flex flex-col ">
+      {/* Navbar */}
+      <nav className="flex items-center justify-between px-6 md:px-10 py-4">
+        <h1 className="logo">
+          MyKolachi
+        </h1>
+<ul className="hidden md:flex items-center justify-center gap-6 border-[2px] border-[rgba(236,234,234,0.8)] bg-[var(--color-brown)]/45 rounded-full px-4 py-3 mr-10">
   {[
-    "Home",
-    "Geography",
-    "Origins",
-    "Culture",
-    "People",
-    "Then & Now",
+    { name: "Home", href: "#home" },
+    { name: "Geography", href: "#geography" },
+    { name: "Origins", href: "#origins" },
+    { name: "Culture", href: "#culture" },
+    { name: "Then & Now", href: "#then-now" },
   ].map((item) => (
-    <li
-      key={item}
-      className="px-6 py-2 rounded-full text-[15px] tracking-wide 
-      text-[#F2E9E2] hover:bg-[#F2E9E233] 
-      transition-all duration-300 cursor-pointer"
-    >
-      {item}
+    <li key={item.name}>
+      <a
+        href={item.href}
+        className="px-4 py-2 rounded-full text-[15px] tracking-wide text-[#F2E9E2] hover:bg-[#F2E9E233] transition-all duration-300"
+      >
+        {item.name}
+      </a>
     </li>
   ))}
 </ul>
 
-        <span className="text-orange-500 text-2xl"><MdDarkMode /></span> {/* Sun icon – replace with SVG if needed */}
+
+        <button 
+          onClick={onToggleAudio}
+          className="text-[var(--color-red)] text-2xl cursor-pointer p-2 rounded-full hover:bg-gray-100/10 transition-colors"
+          aria-label={isPlaying ? "Mute audio" : "Unmute audio"}
+        >
+          {isPlaying ? <FaVolumeUp /> : <FaVolumeMute />}
+        </button>
       </nav>
 
-      {/* Hero Section with Video Background */}
-      <div className="relative flex-grow flex items-center justify-center ">
-        {/* Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute top-0 rounded-[12.5px] border-[20.78px] border-[#72433033] w-[1219px] h-[672px] object-cover mx-auto" // Adjust brightness for overlay readability
-          src="videos/Hero.mp4" // Example Karachi cityscape video – replace with your HD source
-        >
-          
-        </video>
+      {/* Hero Section */}
+      <div className="relative flex items-center justify-center px-6 md:px-10">
+        {/* Video Container */}
+        <div className="relative w-full mx-auto">
+          {/* Background Video */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="rounded-[12px] border-[16px] border-[var(--color-brown)]/40 object-cover w-full h-[600px] mx-auto"
+            src="https://res.cloudinary.com/dja1ghysx/video/upload/v1762159440/Hero_xm9rwg.mp4"
+          ></video>
 
-        {/* Overlay Content */}
-        <div className="relative z-10 text-left text-white px-8 max-w-[800px] mx-auto">
-          <h2 className="text-[66px] italic font-bold uppercase leading-[1.2] drop-shadow-lg">
-          <TypingAnimation loop={true}>The Karachi That Lives In Our Hearts:</TypingAnimation>  
-          </h2>
-          <div className="text-[35px] mt-90 leading-[1.2]">
-          <TextAnimate animation="slideUp" by="word" duration={1}>
-     A journey through the city&apos;s origins, culture, and the grace it once held.
-    </TextAnimate>  
+          {/* Dark overlay */}
+          <div className="absolute top-0 left-0 w-full h-full bg-black/30  rounded-[12px]" />
+
+          {/* Text Content (Left aligned) */}
+          <div className="absolute top-[13%] left-10 md:left-16 z-10 text-white max-w-[750px] text-left">
+            <h2
+              className="text-[2rem] sm:text-[2.5rem] lg:text-[3.5rem] xl:text-[66px]
+              italic font-bold uppercase leading-tight tracking-wide drop-shadow-lg"
+            >
+              <TypingAnimation loop={false}>
+                The Karachi That Lives In Our Hearts :
+              </TypingAnimation>
+            </h2>
+
+            <div
+              className="mt-4 text-[2rem] sm:text-[1.2rem] md:text-[1.3rem] xl:text-[35px]
+              font-normal leading-[1.2] drop-shadow-md"
+            >
+              <TextAnimate animation="slideUp" by="word" duration={1}>
+                A journey through the city&apos;s origins, culture, and the grace
+                it once held.
+              </TextAnimate>
+            </div>
           </div>
-          <button className="mt-8 p-24 bg-[var(--color-red)] text-[23px] font-semibold rounded-full hover:bg-red-600 transition flex items-center justify-center mx-auto">
-            Explore Karachi
-            
-          </button>
-        </div>
 
-      
-       
+          {/* Button (Horizontally centered, vertically ~70%) */}
+          <div className="absolute tex-white left-1/2 top-[68%] transform -translate-x-1/2 z-10 flex flex-col items-center gap-4">
+            <button  onClick={() => {
+    document.getElementById("geography")?.scrollIntoView({ behavior: "smooth" });
+  }}
+              className="px-8 py-3 bg-[var(--color-brown)] text-[18px] sm:text-[20px] text-white
+              font-semibold rounded-full button"
+            >
+              Explore Karachi
+            </button>
+            <HiChevronDoubleDown className="text-3xl text-white animate-bounce mt-2" />
+          </div>
+        </div>
       </div>
     </header>
-    </div>
+    </section>
   );
 };
 
