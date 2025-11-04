@@ -5,57 +5,67 @@ interface TimelineEvent {
   title: string;
   description: string;
   position: 'top' | 'bottom';
+  image: string;
 }
 
 const KarachiTimeline = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const previousVisibility = useRef(false);
 
-  const events: TimelineEvent[] = [
-    {
-      year: '1729',
-      title: 'Early Settlement',
-      description: 'Formation of the colonies',
-      position: 'top'
-    },
-    {
-      year: '1730s',
-      title: 'Fishing Village',
-      description: 'Great Awakening',
-      position: 'bottom'
-    },
-    {
-      year: '1795',
-      title: 'Talpur Rule',
-      description: 'French-Indian War',
-      position: 'top'
-    },
-    {
-      year: '1760s',
-      title: 'Trade Expansion',
-      description: 'Thomas Paine and others',
-      position: 'bottom'
-    },
-    {
-      year: '1839',
-      title: 'British Era',
-      description: 'Boston Massacre',
-      position: 'top'
-    },
-    {
-      year: '1869',
-      title: 'Suez Canal',
-      description: 'Declaration of Independence',
-      position: 'bottom'
-    },
-    {
-      year: '1947',
-      title: 'Independence',
-      description: 'First capital of Pakistan',
-      position: 'top'
-    }
-  ];
+ const events: TimelineEvent[] = [
+  {
+    year: '1729',
+    title: 'Kolachi Village',
+    description: 'A small fishing settlement founded by Baloch families along the Arabian coast.',
+    position: 'top',
+    image: '/images/timeline/1.jfif'
+  },
+  {
+    year: '1795',
+    title: 'Under Talpur Rule',
+    description: 'Karachi grew into a modest trading port during the Talpur era.',
+    position: 'bottom',
+    image: '/images/timeline/2.jpg'
+  },
+  {
+    year: '1839',
+    title: 'British Arrival',
+    description: 'British troops took control of Karachi, marking the start of colonial development.',
+    position: 'top',
+    image: '/images/timeline/3.jpg'
+  },
+  {
+    year: '1869',
+    title: 'Trade Expansion',
+    description: 'The opening of the Suez Canal turned Karachi into an important seaport for Asia.',
+    position: 'bottom',
+    image: '/images/timeline/4.png'
+  },
+  {
+    year: '1947',
+    title: 'Independence',
+    description: 'Karachi became the first capital of Pakistan after independence.',
+    position: 'top',
+    image: '/images/timeline/5.jpg'
+  },
+  {
+    year: '1960',
+    title: 'New Capital Established',
+    description: 'The capital moved to Islamabad, but Karachi remained the country’s business center.',
+    position: 'bottom',
+    image: '/images/timeline/6.jpg'
+  },
+  {
+    year: 'Today',
+    title: 'Modern Karachi',
+    description: 'A diverse and dynamic city known for its culture, industry, and resilience.',
+    position: 'top',
+    image: '/images/timeline/7.jpg'
+  }
+];
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,19 +94,50 @@ const KarachiTimeline = () => {
       }
     };
 
+    setIsMounted(true);
+    
     window.addEventListener('scroll', handleScroll);
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const [dimensions, setDimensions] = useState({
+    viewportWidth: 1200,
+    startOffset: 0,
+    maxScroll: 0,
+    horizontalOffset: 0,
+    totalEventWidth: 0
+  });
+
   const eventWidth = 350;
   const eventGap = 100;
   const totalEventWidth = events.length * (eventWidth + eventGap);
-  const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
-  const startOffset = viewportWidth / 2 - eventWidth / 2;
-  const maxScroll = totalEventWidth - viewportWidth / 2 - eventWidth / 2;
-  const horizontalOffset = startOffset - (scrollProgress * maxScroll);
+
+  useEffect(() => {
+    // This effect runs only on the client side
+    const updateDimensions = () => {
+      const viewportWidth = window.innerWidth;
+      const startOffset = viewportWidth / 2 - eventWidth / 2;
+      const maxScroll = totalEventWidth - viewportWidth / 2 - eventWidth / 2;
+      const horizontalOffset = startOffset - (scrollProgress * maxScroll);
+      
+      setDimensions({
+        viewportWidth,
+        startOffset,
+        maxScroll,
+        horizontalOffset,
+        totalEventWidth
+      });
+    };
+
+    // Initial calculation
+    updateDimensions();
+
+    // Update on window resize
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [scrollProgress, totalEventWidth]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ddd4c8' }}>
@@ -111,10 +152,11 @@ const KarachiTimeline = () => {
           <div className="pt-10 px-8 text-left">
   <div className="inline-block text-center">
     <h1 
-      className="text-5xl md:text-6xl lg:text-7xl font-serif mb-2"
+      className="text-7xl md:text-6xl lg:text-7xl font-serif mb-2"
       style={{ 
         color: '#5a3e2b',
-        fontWeight: 500,
+        fontWeight: 600,
+        fontFamily: 'Montserrat, serif',
         letterSpacing: '-0.02em',
         lineHeight: '1.1'
       }}
@@ -148,11 +190,12 @@ const KarachiTimeline = () => {
 
 
           {/* Timeline Container - Centered */}
-          <div className="flex-1 flex items-center w-full overflow-hidden">
+          <div className="flex-1 pt-5 flex items-center w-full overflow-hidden">
             <div 
               className="relative w-full transition-transform duration-500 ease-out"
               style={{
-                transform: `translateX(${horizontalOffset}px)`,
+                transform: `translateX(${dimensions.horizontalOffset}px)`,
+                visibility: isMounted ? 'visible' : 'hidden',
                 willChange: 'transform'
               }}
             >
@@ -162,7 +205,7 @@ const KarachiTimeline = () => {
                 style={{
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  width: `${totalEventWidth + viewportWidth}px`,
+                  width: `${dimensions.totalEventWidth + dimensions.viewportWidth}px`,
                   height: '3px',
                   backgroundColor: '#c1553d',
                 }}
@@ -224,7 +267,7 @@ const KarachiTimeline = () => {
                       <div 
                         className="absolute transition-all duration-700 flex items-center gap-4"
                         style={{
-                          top: event.position === 'top' ? 'calc(50% - 180px)' : 'calc(50% + 60px)',
+                          top: event.position === 'top' ? 'calc(50% - 195px)' : 'calc(50% + 50px)',
                           left: '50%',
                           transform: `translateX(-13%) translateY(${(1 - eventProgress) * 15}px) scale(${scale})`,
                           width: '340px',
@@ -234,7 +277,7 @@ const KarachiTimeline = () => {
                         {/* Text Content - Left Side */}
                         <div className="flex-1 space-y-1 text-left">
                           <div 
-                            className="text-2xl font-serif font-bold"
+                            className="text-2xl font- font-bold"
                             style={{ 
                               color: isActive ? '#c1553d' : '#9a8a7a',
                               letterSpacing: '-0.01em',
@@ -292,33 +335,19 @@ const KarachiTimeline = () => {
                               zIndex: 1,
                             }}
                           >
-                            <div 
-                              className="w-full h-full flex flex-col items-center justify-center text-white font-medium"
-                              style={{ 
-                                backgroundColor: '#6b5b4b',
+                            <img 
+                              src={event.image} 
+                              alt={event.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.onerror = null;
+                                target.src = '/images/placeholder.jpg';
                               }}
-                            >
-                              <div className="text-xs">Historical</div>
-                              <div className="text-xs">Image</div>
-                            </div>
+                            />
                           </div>
 
-                          {/* Decorative Icons */}
-                          {index % 3 === 0 && (
-                            <div 
-                              className="absolute transition-all duration-700"
-                              style={{
-                                right: '-18px',
-                                bottom: '-10px',
-                                opacity: isActive ? 0.4 : 0.12,
-                                zIndex: 2
-                              }}
-                            >
-                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M3 3L17 17M17 3L3 17" stroke="#c1553d" strokeWidth="1.5"/>
-                              </svg>
-                            </div>
-                          )}
+                        
                         </div>
                       </div>
                     </div>
