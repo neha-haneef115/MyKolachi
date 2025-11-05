@@ -13,14 +13,14 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
 
   return (
-<section id="home px-10"> 
+<section id="home" className="noisebg"> 
     <header className="flex flex-col ">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-6 md:px-10 py-1">
+      <nav className="flex items-center py-6 justify-between px-6 md:px-10 py-1">
         <h1 className="logo">
           MyKolachi
         </h1>
-<ul className="hidden md:flex items-center justify-center gap-6 border-[2px] border-[rgba(236,234,234,0.8)] bg-[var(--color-brown)]/60 rounded-full px-4 py-3 mr-10">
+<ul className="hidden md:flex items-center justify-center gap-6 border-[2px] border-[rgb(236,234,234)] bg-[var(--color-brown)]/90 rounded-full px-4 py-3 mr-10">
   {[
     { name: "Home", href: "#home" },
     { name: "Geography", href: "#geography" },

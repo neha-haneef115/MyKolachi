@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import Herosec from "@/components/sections/Herosec";
 import Geography from "@/components/sections/Geography";
 import Origins from "@/components/sections/Origins";
+import Culture from "@/components/sections/Culture";
+
 export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -42,6 +44,8 @@ export default function Home() {
       <Herosec isPlaying={isPlaying} onToggleAudio={toggleAudio} />
       <Geography />
       <Origins />
+      <Culture />
+      
     </div>
   );
 }
