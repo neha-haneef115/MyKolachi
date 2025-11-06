@@ -143,95 +143,94 @@ interface CultureItem {
 const foodImages = [
   { 
     id: 1, 
-    img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=500&auto=format&fit=crop" 
-  },
-  { 
+    img: "https://i.pinimg.com/1200x/38/b5/7e/38b57e590aeb71f3478db74388f48c49.jpg"
+  },{ 
     id: 2, 
-    img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=500&auto=format&fit=crop" 
+    img: "https://cdn.shopify.com/s/files/1/0570/2113/6986/files/Shahi_Haleem_Tin_-_Chicken_Haleem_Chicken_Haleem_Can_-_Tin_Packed_-_Net_Weight_800_Grams_Canned_-_Ready_To_Eat_-_Tasty_Food.jpg?v=1661855762" 
   },
   { 
     id: 3, 
-    img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=500&auto=format&fit=crop" 
+    img: "https://ticklethosetastebuds.com/wp-content/uploads/2021/07/1-724x1024.png" 
   },
   { 
     id: 4, 
-    img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/1200x/8c/4f/01/8c4f018f5be2e7fbfb7a71017244d9d6.jpg" 
   }
 ];
 
 const peopleImages = [
   { 
     id: 1, 
-    img: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/736x/2b/4f/a7/2b4fa79458a9b359937164adfd70ece8.jpg" 
   },
   { 
     id: 2, 
-    img: "https://images.unsplash.com/photo-1581092795360-8a56e9b40a36?q=80&w=500&auto=format&fit=crop" 
+    img: "https://www.arabnews.com/sites/default/files/styles/n_670_395/public/2024/09/27/4528573-869018640.jpg?itok=v_Mt2aBn" 
   },
   { 
     id: 3, 
-    img: "https://images.unsplash.com/photo-1581093458791-8a6a6e7a5c7f?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/originals/f3/01/89/f30189a08d3d6d76d0f6339ba3b26238.jpg" 
   },
   { 
     id: 4, 
-    img: "https://images.unsplash.com/photo-1581092918056-0c4c3a8e9f6d?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/736x/d1/02/de/d102de8145cdd05f337ebaa40892f767.jpg" 
   }
 ];
 
 const festivitiesImages = [
   { 
     id: 1, 
-    img: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/736x/1f/e8/14/1fe814d16bb4927a094d034a569f23ed.jpg" 
   },
   { 
     id: 2, 
-    img: "https://images.unsplash.com/photo-1547825406-f2ae165c1c72?q=80&w=500&auto=format&fit=crop" 
+    img: "https://www.arabnews.pk/sites/default/files/2023/03/08/3714926-1717315363.jpeg" 
   },
   { 
     id: 3, 
-    img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/1200x/8d/0e/8e/8d0e8e4f589f3613954a331b12d64fa4.jpg" 
   },
   { 
     id: 4, 
-    img: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/736x/1c/59/e1/1c59e1b61ba0967a2b270438fbd7fafa.jpg" 
   }
 ];
 
 const artImages = [
   { 
     id: 1, 
-    img: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.pinimg.com/1200x/66/96/e8/6696e8d2d9cb1e274321b2eeefc20ecb.jpg" 
   },
   { 
     id: 2, 
-    img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=500&auto=format&fit=crop" 
+    img: "https://tripjive.com/wp-content/uploads/2024/11/street-art-in-Karachis-neighborhoods-1024x585.jpg" 
   },
   { 
     id: 3, 
-    img: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=500&auto=format&fit=crop" 
+    img: "https://www.researchgate.net/publication/336105883/figure/fig4/AS:807794341060614@1569604587494/Truck-Art-Karachi-Pakistan.png" 
   },
   { 
     id: 4, 
-    img: "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.dawn.com/primary/2023/09/650f687e556a6.jpg" 
   }
 ];
 
 const musicImages = [
   { 
     id: 1, 
-    img: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=500&auto=format&fit=crop" 
+    img: "https://aifd.edu.pk/wp-content/gallery/qawali-night-2024/qawali-night-24-large-12.jpg" 
   },
   { 
     id: 2, 
-    img: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=500&auto=format&fit=crop" 
+    img: "https://i.tribune.com.pk/media/images/19516-CONCERT_ANUSHAYFURQANx-1384942725/19516-CONCERT_ANUSHAYFURQANx-1384942725.jpg" 
   },
   { 
     id: 3, 
-    img: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=500&auto=format&fit=crop" 
+    img: "https://propakistani.pk/lens/wp-content/uploads/2025/05/danceday-13.jpg" 
   },
   { 
     id: 4, 
-    img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=500&auto=format&fit=crop" 
+    img: "https://www.artscouncil.org.pk/wp-content/uploads/2019/12/Celebratiing-Historian-Dr.-Mubarak-Ali-at-Arts-Council-Karachi-1-1024x683.jpg" 
   }
 ];
 
@@ -239,7 +238,7 @@ const cultureData: CultureItem[] = [
   {
     title: 'Traditional Food',
     description:
-      'From spicy biryani to flavorful nihari, Karachis cuisine represents a fusion of cultures and generations. Each meal tells a story of heritage and taste.',
+      'From spicy biryani to flavorful nihari, Karachi’s cuisine reflects a blend of cultures and generations. Every dish carries a story of heritage and taste.',
     stats: [
       { label: 'Cuisines', value: '50+' },
       { label: 'Food Streets', value: '100+' }
@@ -261,7 +260,7 @@ const cultureData: CultureItem[] = [
   {
     title: 'Festivities',
     description:
-      'Karachi celebrates every festival with unmatched spirit — from Eid to Basant, the city shines with color and joy.',
+      'Karachi celebrates every festival with unmatched spirit. From Eid to Basant, the city shines with color and joy.',
     stats: [
       { label: 'Annual Events', value: '200+' },
       { label: 'Communities', value: '50+' }
@@ -272,7 +271,7 @@ const cultureData: CultureItem[] = [
   {
     title: 'Art & Architecture',
     description:
-      'The city is home to a blend of colonial architecture, modern art, and vibrant truck art that reflect its cultural richness.',
+      'The city is home to a mix of colonial architecture, modern art, and vibrant truck art that reflect its cultural richness.',
     stats: [
       { label: 'Heritage Sites', value: '30+' },
       { label: 'Art Galleries', value: '40+' }
@@ -283,7 +282,7 @@ const cultureData: CultureItem[] = [
   {
     title: 'Music & Dance',
     description:
-      'Karachis creative heartbeat lies in its music — from qawwali and classical rhythms to modern underground sounds.',
+      'Karachi’s creative heartbeat lies in its music, from qawwali and classical rhythms to modern underground sounds.',
     stats: [
       { label: 'Music Venues', value: '60+' },
       { label: 'Artists', value: '1000+' }
@@ -292,6 +291,7 @@ const cultureData: CultureItem[] = [
     images: musicImages,
   },
 ];
+
 
 // Counting animation component
 const AnimatedCounter = ({ value, label }: { value: string; label: string }) => {

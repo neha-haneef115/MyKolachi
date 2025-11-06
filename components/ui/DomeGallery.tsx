@@ -21,8 +21,6 @@ type DomeGalleryProps = {
   imageBorderRadius?: string;
   openedImageBorderRadius?: string;
   grayscale?: boolean;
-  externalRotation?: number;
-  disableDrag?: boolean;
 };
 
 type ItemDef = {
@@ -36,31 +34,31 @@ type ItemDef = {
 
 const DEFAULT_IMAGES: ImageItem[] = [
   {
-    src: 'https://images.unsplash.com/photo-1606511490662-b2c5be7d95a1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=825',
-    alt: 'Quaid Dome'
+    src: 'https://images.unsplash.com/photo-1755331039789-7e5680e26e8f?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    alt: 'Abstract art'
   },
   {
-    src: 'https://c2.staticflickr.com/8/7069/6956744835_aa7547d469_z.jpg',
-    alt: 'Habib bank'
+    src: 'https://images.unsplash.com/photo-1755569309049-98410b94f66d?q=80&w=772&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    alt: 'Modern sculpture'
   },
   {
-    src: 'https://images.unsplash.com/photo-1720347774718-91497c0727d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGthcmFjaGklMjBjaXR5fGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500',
-    alt: 'Empress market'
+    src: 'https://images.unsplash.com/photo-1755497595318-7e5e3523854f?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    alt: 'Digital artwork'
   },
   {
-    src: 'https://images.unsplash.com/photo-1709326955894-ed49938291ed?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8a2FyYWNoaSUyMGNpdHl8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000',
-    alt: 'Quaid Dome'
+    src: 'https://images.unsplash.com/photo-1755353985163-c2a0fe5ac3d8?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    alt: 'Contemporary art'
   },
   {
-    src: 'https://images.unsplash.com/photo-1709326955894-ed49938291ed?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8a2FyYWNoaSUyMGNpdHl8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000',
+    src: 'https://images.unsplash.com/photo-1745965976680-d00be7dc0377?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Geometric pattern'
   },
   {
-    src: 'https://cdn.britannica.com/85/128585-050-5A1BDD02/Karachi-Pakistan.jpg',
+    src: 'https://images.unsplash.com/photo-1752588975228-21f44630bb3c?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Textured surface'
   },
   {
-    src: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTUzX2ZdyzOhz0NS20u3aXq0TVhvY4DO4KxlCuI7mzIXeKIiAoj',
+    src: 'https://pbs.twimg.com/media/Gyla7NnXMAAXSo_?format=jpg&name=large',
     alt: 'Social media image'
   }
 ];
@@ -157,9 +155,7 @@ export default function DomeGallery({
   openedImageHeight = '400px',
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
-  grayscale = true,
-  externalRotation = 0,
-  disableDrag = false
+  grayscale = true
 }: DomeGalleryProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -203,23 +199,14 @@ export default function DomeGallery({
 
   const items = useMemo(() => buildItems(images, segments), [images, segments]);
 
-  const applyTransform = useCallback((xDeg: number, yDeg: number) => {
+  const applyTransform = (xDeg: number, yDeg: number) => {
     const el = sphereRef.current;
     if (el) {
       el.style.transform = `translateZ(calc(var(--radius) * -1)) rotateX(${xDeg}deg) rotateY(${yDeg}deg)`;
     }
-  }, []);
+  };
 
   const lockedRadiusRef = useRef<number | null>(null);
-
-  // Apply external rotation
-  useEffect(() => {
-    if (externalRotation !== undefined && externalRotation !== null) {
-      const yDeg = (externalRotation * 180) / Math.PI;
-      rotationRef.current = { x: rotationRef.current.x, y: yDeg };
-      applyTransform(rotationRef.current.x, yDeg);
-    }
-  }, [externalRotation, applyTransform]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -302,13 +289,12 @@ export default function DomeGallery({
     imageBorderRadius,
     openedImageBorderRadius,
     openedImageWidth,
-    openedImageHeight,
-    applyTransform
+    openedImageHeight
   ]);
 
   useEffect(() => {
     applyTransform(rotationRef.current.x, rotationRef.current.y);
-  }, [applyTransform]);
+  }, []);
 
   const stopInertia = useCallback(() => {
     if (inertiaRAF.current) {
@@ -347,13 +333,12 @@ export default function DomeGallery({
       stopInertia();
       inertiaRAF.current = requestAnimationFrame(step);
     },
-    [dragDampening, maxVerticalRotationDeg, stopInertia, applyTransform]
+    [dragDampening, maxVerticalRotationDeg, stopInertia]
   );
 
   useGesture(
     {
       onDragStart: ({ event }) => {
-        if (disableDrag) return;
         if (focusedElRef.current) return;
         stopInertia();
 
@@ -370,7 +355,6 @@ export default function DomeGallery({
         tapTargetRef.current = potential || null;
       },
       onDrag: ({ event, last, velocity: velArr = [0, 0], direction: dirArr = [0, 0], movement }) => {
-        if (disableDrag) return;
         if (focusedElRef.current || !draggingRef.current || !startPosRef.current) return;
 
         const evt = event as PointerEvent;
@@ -757,6 +741,16 @@ export default function DomeGallery({
       }
     }
     
+    // body.dg-scroll-lock {
+    //   position: fixed !important;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100% !important;
+    //   height: 100% !important;
+    //   overflow: hidden !important;
+    //   touch-action: none !important;
+    //   overscroll-behavior: contain !important;
+    // }
     .item__image {
       position: absolute;
       inset: 10px;
