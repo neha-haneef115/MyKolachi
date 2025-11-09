@@ -14,7 +14,7 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
 
   return (
 <section id="home" className="noisebg"> 
-    <header className="flex flex-col ">
+    <header className="flex flex-col">
       {/* Navbar */}
       <nav className="flex items-center py-6 justify-between px-6 md:px-10 py-1">
         <h1 className="logo">
@@ -22,11 +22,12 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
         </h1>
 <ul className="hidden md:flex items-center justify-center gap-6 border-[2px] border-[rgb(236,234,234)] bg-[var(--color-brown)]/90 rounded-full px-4 py-3 mr-10">
   {[
-    { name: "Home", href: "#home" },
+    
     { name: "Geography", href: "#geography" },
     { name: "Origins", href: "#origins" },
     { name: "Culture", href: "#culture" },
-    { name: "Then & Now", href: "#then-now" },
+    { name: "Then vs Now", href: "#then-now" },
+    { name: "Tribute", href: "#tribute" },
   ].map((item) => (
     <li key={item.name}>
       <a

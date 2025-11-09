@@ -4,7 +4,8 @@ import Herosec from "@/components/sections/Herosec";
 import Geography from "@/components/sections/Geography";
 import Origins from "@/components/sections/Origins";
 import Culture from "@/components/sections/Culture";
-
+import { Tribute } from "@/components/sections/Tribute";
+import Footer from "@/components/sections/footer";
 export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -45,7 +46,8 @@ export default function Home() {
       <Geography />
       <Origins />
       <Culture />
-      
+      <Tribute/>
+      <Footer/>
     </div>
   );
 }
