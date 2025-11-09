@@ -1,6 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState, useRef } from "react";
+import { motion, useInView, easeInOut } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { ShimmerButton } from "@/components/ui/shimmer-button"
 
 interface Testimonial {
   quote: string;
@@ -33,35 +35,118 @@ const testimonials: Testimonial[] = [
     quote: "Karachi's diversity is its strength - a true melting pot of cultures and traditions.",
     name: "Omar Shah",
     title: "Cultural Expert"
+  },
+  {
+    quote: "The energy of Karachi is contagious - it's a city that inspires you to dream bigger.",
+    name: "Zainab Ali",
+    title: "Entrepreneur"
+  },
+  {
+    quote: "Sunset at Clifton beach is one of the most beautiful sights you'll ever witness.",
+    name: "Bilal Ahmed",
+    title: "Photographer"
+  },
+  {
+    quote: "Karachi's street food is a culinary adventure you don't want to miss.",
+    name: "Hina Shah",
+    title: "Food Critic"
   }
 ];
 
 interface InfiniteMovingCardsProps {
   items: Testimonial[];
   speed?: "slow" | "normal" | "fast";
+  direction?: "left" | "right";
+  rowIndex?: number;
 }
 
-const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({ items, speed = "slow" }) => {
+const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({
+  items,
+  speed = "slow",
+  direction = "left",
+  rowIndex = 0
+}) => {
   const [position, setPosition] = useState<number>(0);
-  const speedMap: Record<string, number> = { slow: 30, normal: 20, fast: 10 };
+  const [isPaused, setIsPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const speedMap: Record<string, number> = { slow: 40, normal: 25, fast: 15 };
   const duration: number = speedMap[speed];
 
   useEffect(() => {
+    if (isPaused || isDragging) return;
+
     const interval = setInterval(() => {
-      setPosition((prev) => prev - 1);
+      setPosition((prev) => direction === "left" ? prev - 1 : prev + 1);
     }, duration);
     return () => clearInterval(interval);
-  }, [duration]);
+  }, [duration, isPaused, isDragging, direction]);
 
   const duplicatedItems: Testimonial[] = [...items, ...items, ...items];
 
+  // Draggable functionality
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setIsPaused(true);
+    setStartX(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+
+    const deltaX = e.clientX - startX;
+    setPosition(prev => prev + deltaX * 2);
+    setStartX(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setTimeout(() => setIsPaused(false), 1000);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    setIsPaused(true);
+    setStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+
+    const deltaX = e.touches[0].clientX - startX;
+    setPosition(prev => prev + deltaX * 2);
+    setStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    setTimeout(() => setIsPaused(false), 1000);
+  };
+
   return (
-    <div className="overflow-hidden relative">
+    <div
+      ref={containerRef}
+      className="overflow-hidden relative"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => !isDragging && setIsPaused(false)}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        cursor: isDragging ? 'grabbing' : 'grab'
+      }}
+    >
       <div
         className="flex gap-6"
         style={{
           transform: `translateX(${position}px)`,
-          width: "fit-content"
+          width: "fit-content",
+          transition: isDragging ? 'none' : 'transform 0.1s linear'
         }}
         onTransitionEnd={() => {
           if (Math.abs(position) >= (items.length * 400)) {
@@ -70,9 +155,14 @@ const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({ items, speed 
         }}
       >
         {duplicatedItems.map((item: Testimonial, idx: number) => (
-          <div
-            key={idx}
-            className="w-[380px] flex-shrink-0 bg-gradient-to-br from-white to-[#fef5ed] rounded-2xl p-8 shadow-xl border border-[#943204]/10 hover:shadow-2xl hover:scale-105 transition-all duration-300 backdrop-blur-sm"
+          <motion.div
+            key={`${rowIndex}-${idx}`}
+            className="w-[380px] flex-shrink-0 bg-white  rounded-2xl p-8 shadow-xl border border-[#943204]/10"
+            whileHover={{
+              scale: isDragging ? 1 : 1.02,
+              y: isDragging ? 0 : -3,
+              transition: { type: "spring", stiffness: 300 }
+            }}
           >
             <div className="mb-6">
               <svg className="w-12 h-12 text-[#943204]/20" fill="currentColor" viewBox="0 0 24 24">
@@ -91,9 +181,11 @@ const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({ items, speed 
                 <p className="text-[#943204]/60 text-sm">{item.title}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
+
+
     </div>
   );
 };
@@ -104,13 +196,17 @@ interface Stat {
 }
 
 export const Tribute: React.FC = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isSharing, setIsSharing] = useState(false);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: [0.6, 0.0, 0.1, 0.9] as [number, number, number, number],
+        ease: [0.6, 0.0, 0.1, 0.9],
         staggerChildren: 0.2,
         when: "beforeChildren"
       }
@@ -124,7 +220,7 @@ export const Tribute: React.FC = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.6, 0.0, 0.1, 0.9] as [number, number, number, number]
+        ease: [0.6, 0.0, 0.1, 0.9]
       }
     }
   };
@@ -136,93 +232,125 @@ export const Tribute: React.FC = () => {
     { number: "#1", label: "Largest City" }
   ];
 
+  const floatingVariants = {
+    floating: {
+      y: [-10, 10, -10],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut",
+        repeatType: "reverse" as const
+      }
+    }
+  } as const;
+
+  // Enhanced WhatsApp Share Function
+  const shareOnWhatsApp = async () => {
+    setIsSharing(true);
+
+    // Get a random testimonial for sharing
+    const randomTestimonial = testimonials[Math.floor(Math.random() * testimonials.length)];
+
+    const message = `🌟 *Voices of Karachi* 🌟
+
+"${randomTestimonial.quote}"
+
+- *${randomTestimonial.name}*, ${randomTestimonial.title}
+
+🏙️ *Karachi at a Glance:*
+• Population: 16M+
+• Area: 3,780 km²
+• Founded: 1729
+• Pakistan's Largest City
+
+Share your own Karachi story with us! What makes Karachi special to you? 💫
+
+#VoicesOfKarachi #CityOfLights`;
+
+    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+    // Add a small delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    window.open(url, '_blank');
+    setIsSharing(false);
+  };
+
   return (
-    <section className="relative py-24 bg-gradient-to-br from-[#e6c5ac] via-[#f0d4bc] to-[#e6c5ac] overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#943204]/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#943204]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+    <section ref={ref} className="relative py-24 overflow-hidden bg-white dark:bg-black">
+    
+      <div
+        className={cn(
+          "absolute inset-0",
+          "[background-size:40px_40px]",
+          "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]"
+        )}
+      />
+
+      {/* Radial gradient overlay */}
+ <div className="w-full relative z-10 mb-8">
+        <div className="flex justify-center">
+          <ShimmerButton className="shadow-xl px-8 py-3 text-6xl">
+            <span className="text-center font-sans font-medium tracking-tight text-white">
+          Voice Of Karachi
+            </span>
+          </ShimmerButton>
+        </div>
       </div>
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#94320405_1px,transparent_1px),linear-gradient(to_bottom,#94320405_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
-        <motion.div 
-          className="text-center mb-20"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants} className="inline-block mb-4">
-            <span className="px-6 py-2 bg-white/50 backdrop-blur-sm rounded-full text-[#943204] font-semibold text-sm border border-[#943204]/20 shadow-lg">
-               Testimonials
-            </span>
-          </motion.div>
-          
-          <motion.h2 
-            variants={itemVariants}
-            className="text-5xl md:text-7xl font-bold text-[#943204] mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#943204] to-[#c14818]"
-          >
-            Voices of Karachi
-          </motion.h2>
-          
-          <motion.p 
-            variants={itemVariants}
-            className="text-xl text-[#943204]/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            Hear what people say about the city that never sleeps
-          </motion.p>
 
-          {/* Decorative Line */}
-          <motion.div 
-            variants={itemVariants}
-            className="flex items-center justify-center gap-4 mt-8"
-          >
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#943204]/30"></div>
-            <div className="w-2 h-2 rounded-full bg-[#943204]"></div>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#943204]/30"></div>
-          </motion.div>
-        </motion.div>
-        
-        <motion.div 
-          className="relative"
+
+     
+      
+      {/* Dual Row Testimonials */}
+      <div className="relative z-10">
+        <motion.div
+          className="space-y-4"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Gradient Overlays for Fade Effect */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#e6c5ac] to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#e6c5ac] to-transparent z-10 pointer-events-none"></div>
-          
-          <div className="relative py-8">
+          {/* Enhanced Gradient Overlays */}
+
+
+          {/* First Row */}
+          <div className="relative py-1">
             <InfiniteMovingCards
-              items={testimonials}
+              items={testimonials.slice(0, 4)}
               speed="slow"
+              direction="left"
+              rowIndex={0}
+            />
+          </div>
+
+          {/* Second Row */}
+          <div className="relative py-1">
+            <InfiniteMovingCards
+              items={testimonials.slice(4)}
+              speed="normal"
+              direction="right"
+              rowIndex={1}
             />
           </div>
         </motion.div>
 
-        {/* Stats Section */}
-        <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
-          initial="hidden"
-          whileInView="visible"
+
+
+        {/* Single Enhanced Share Button */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          variants={containerVariants}
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
-          {stats.map((stat: Stat, idx: number) => (
-            <motion.div
-              key={idx}
-              variants={itemVariants}
-              className="text-center p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-[#943204]/10 hover:bg-white/60 transition-all duration-300 hover:scale-105 shadow-lg"
-            >
-              <p className="text-4xl md:text-5xl font-bold text-[#943204] mb-2">{stat.number}</p>
-              <p className="text-[#943204]/70 font-medium">{stat.label}</p>
-            </motion.div>
-          ))}
+
+
+         
+
+        
         </motion.div>
       </div>
     </section>
