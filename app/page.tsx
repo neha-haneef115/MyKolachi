@@ -5,6 +5,7 @@ import Geography from "@/components/sections/Geography";
 import Origins from "@/components/sections/Origins";
 import Culture from "@/components/sections/Culture";
 import {Tribute} from "@/components/sections/Tribute";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -47,7 +48,7 @@ export default function Home() {
       <Origins />
       <Culture />
       <Tribute/>
-    
+    <Footer/>
     </div>
   );
 }

@@ -10,7 +10,8 @@ export const Tribute: React.FC = () => {
 
   return (
     <section
-      ref={ref}
+      ref={ref} 
+      id="tribute"
       className="relative py-24 overflow-hidden bg-black"
     >
        <div
