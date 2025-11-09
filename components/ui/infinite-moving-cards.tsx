@@ -113,7 +113,7 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <motion.li
-            className="w-[380px] flex-shrink-0 rounded-2xl p-8 shadow-2xl border border-[rgba(148,50,4,0.2)] backdrop-blur-md bg-white/10"
+            className="w-[380px] flex-shrink-0 rounded-2xl p-8 shadow-2xl border border-white/15 backdrop-blur-md bg-white/10"
             key={item.name}
             onHoverStart={() => !isDragging && setHoveredCard(item.name)}
             onHoverEnd={() => setHoveredCard(null)}
