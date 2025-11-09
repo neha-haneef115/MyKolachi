@@ -109,8 +109,10 @@ export function Tribute(): JSX.Element {
     visible: {
       opacity: 1,
       transition: {
+        duration: 0.8,
+        ease: [0.6, 0.0, 0.1, 0.9] as [number, number, number, number],
         staggerChildren: 0.2,
-        delayChildren: 0.3
+        when: "beforeChildren"
       }
     }
   };
@@ -120,9 +122,9 @@ export function Tribute(): JSX.Element {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { 
-        duration: 0.6, 
-        ease: [0.22, 1, 0.36, 1] // Cubic-bezier equivalent of easeOut
+      transition: {
+        duration: 0.6,
+        ease: [0.6, 0.0, 0.1, 0.9] as [number, number, number, number]
       }
     }
   };
