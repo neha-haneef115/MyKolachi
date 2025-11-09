@@ -103,7 +103,7 @@ interface Stat {
   label: string;
 }
 
-export function Tribute(): JSX.Element {
+export const Tribute: React.FC = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
