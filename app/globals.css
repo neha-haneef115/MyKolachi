@@ -149,3 +149,8 @@ canvas {
     @apply bg-background text-foreground;
   }
 }
+.bg-paper {
+  background-color: #F2E9E2; /* base beige */
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-repeat: repeat;
+}

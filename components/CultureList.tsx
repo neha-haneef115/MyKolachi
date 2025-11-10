@@ -238,7 +238,7 @@ const cultureData: CultureItem[] = [
   {
     title: 'Traditional Food',
     description:
-      'From spicy biryani to flavorful nihari, Karachi’s cuisine reflects a blend of cultures and generations. Every dish carries a story of heritage and taste.',
+      'From spicy biryani to flavorful nihari, Karachi\'s cuisine reflects a blend of cultures and generations. Every dish carries a story of heritage and taste.',
     stats: [
       { label: 'Cuisines', value: '50+' },
       { label: 'Food Streets', value: '100+' }
@@ -282,7 +282,7 @@ const cultureData: CultureItem[] = [
   {
     title: 'Music & Dance',
     description:
-      'Karachi’s creative heartbeat lies in its music, from qawwali and classical rhythms to modern underground sounds.',
+      'Karachi\'s creative heartbeat lies in its music, from qawwali and classical rhythms to modern underground sounds.',
     stats: [
       { label: 'Music Venues', value: '60+' },
       { label: 'Artists', value: '1000+' }
@@ -453,8 +453,42 @@ export default function CultureSection() {
 
   return (
     <section className="py-28 relative overflow-hidden " id="culture">
-      {/* Animated Background Elements */}
+      {/* Background Pattern - More Visible */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Main geometric pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 20%, #c1553d 3px, transparent 0),
+              radial-gradient(circle at 80% 80%, #c1553d 3px, transparent 0)
+            `,
+            backgroundSize: '80px 80px',
+            backgroundPosition: '0 0, 40px 40px',
+          }}
+        />
+        
+        {/* Diagonal line pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: `
+              linear-gradient(45deg, transparent 49%, #c1553d 50%, transparent 51%),
+              linear-gradient(135deg, transparent 49%, #c1553d 50%, transparent 51%)
+            `,
+            backgroundSize: '60px 60px',
+          }}
+        />
+        
+        {/* Dot grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage: `radial-gradient(#c1553d 1px, transparent 1px)`,
+            backgroundSize: '30px 30px',
+          }}
+        />
+
         {/* Large circle top right */}
         <div 
           className="absolute rounded-full "
@@ -503,14 +537,12 @@ export default function CultureSection() {
           }}
         />
         
-        {/* Center accent */}
-        
+        {/* Subtle gradient overlay to soften patterns */}
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent"></div>
       </div>
 
-      
-
       {/* Centered Content Container - 800px max width */}
-      <div className="max-w-[1036px] mx-auto px-6">
+      <div className="max-w-[1036px] mx-auto px-6 relative z-10">
         <div className="flex flex-col gap-22">
           {cultureData.map((item, index) => (
             <div
@@ -541,9 +573,6 @@ export default function CultureSection() {
                 index % 2 !== 0 ? 'lg:order-1 lg:mr-22' : 'lg:order-2 lg:ml-32'
               }`}>
                 <div className="relative">
-                  {/* Decorative number */}
-                 
-                  
                   {/* Heading - Montserrat */}
                   <h3 
                     className="text-3xl md:text-5xl font-medium text-[#5a3e2b] mb-4 leading-tight font-serif"
@@ -563,8 +592,7 @@ export default function CultureSection() {
                   {/* Stats with animated counters */}
                   <div className="flex gap-4 mb-6 justify-center lg:justify-start flex-wrap">
                     {item.stats.map((stat, i) => (
-                      <AnimatedCounter key={i} value=
-                      {stat.value} label={stat.label} />
+                      <AnimatedCounter key={i} value={stat.value} label={stat.label} />
                     ))}
                   </div>
 

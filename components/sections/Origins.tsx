@@ -140,7 +140,7 @@ const KarachiTimeline = () => {
   }, [scrollProgress, totalEventWidth]);
 
   return (
-  <section id="origins">
+  <section id="origins" >
     <div className="min-h-screen" style={{ backgroundColor: '#ddd4c8' }}>
       <div 
         ref={sectionRef}

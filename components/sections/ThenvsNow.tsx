@@ -1,70 +1,74 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-
-
 
 type Section = {
   title: string;
   subtitle: string;
   image: string;
+  imageDescription: string;
   reverse?: boolean;
 };
 
 const sections: Section[] = [
   {
     title: "Once Upon a Time",
-    subtitle:
-      "Karachi was calm and beautiful.\nThe sea sang softly, and people smiled with peace.",
-    image: "https://images.pexels.com/photos/301301/pexels-photo-301301.jpeg",
+    subtitle: "Green gardens swayed along the streets,\nHouses stood proud, calm, and sweet.",
+    image: "/images/1.jpg",
+    imageDescription: "1940s Karachi",
     reverse: false,
   },
   {
     title: "City by the Sea",
-    subtitle: "Cool wind touched every street.\nFamilies walked together, happy and free.",
-    image: "https://images.pexels.com/photos/163032/pexels-photo-163032.jpeg",
+    subtitle: "Wide streets stretched under open skies,\nPalm trees and buildings stood wise.",
+    image: "/images/2.jpg",
+    imageDescription: "Victoria Road (Abdullah Haroon Rd), Saddar - 1950s",
     reverse: true,
   },
   {
-    title: "City of Lights",
-    subtitle: "Nights were bright and full of life.\nMusic, art, and dreams filled the air.",
-    image: "https://images.pexels.com/photos/1236701/pexels-photo-1236701.jpeg",
+    title: "City Streets",
+    subtitle: "Wide roads lined with old buildings tall,\nCars and people moved along them all.",
+    image: "/images/3.jpg",
+    imageDescription: "II Chundrigar Road - 1962",
     reverse: false,
   },
   {
-    title: "When Time Changed",
-    subtitle: "Slowly, peace turned into noise.\nThe beauty began to fade away.",
-    image: "https://images.pexels.com/photos/219164/pexels-photo-219164.jpeg",
+    title: "Bustling Markets",
+    subtitle: "Streets alive with people and cheer,\nGreen trees, bright shops, and vehicles near.",
+    image: "/images/4.jpg",
+    imageDescription: "Saddar area - 1965",
     reverse: true,
   },
   {
-    title: "The Lost Charm",
-    subtitle:
-      "Old buildings broke, and streets grew heavy.\nThe city looked tired, yet still tried to shine.",
-    image: "https://images.pexels.com/photos/460621/pexels-photo-460621.jpeg",
+    title: "The Old Charm",
+    subtitle: "Buildings stood proud, tall and bright,\nStreets whispered stories in morning light.",
+    image: "/images/5.jpg",
+    imageDescription: "Mereweather Tower - 1970s",
     reverse: false,
   },
   {
     title: "Hearts That Stayed",
-    subtitle: "People didn't give up.\nThey cared, they helped, they rebuilt.",
-    image: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg",
+    subtitle: "Wide, clean roads and greenery all around,\nThe city stood peaceful, calm without a sound.",
+    image: "/images/6.jpg",
+    imageDescription: "Teen Talwar - 1974",
     reverse: true,
   },
   {
     title: "A New Hope",
-    subtitle: "The sun still rises over My Kolachi.\nThe spirit of the city is still alive.",
-    image: "https://images.pexels.com/photos/132037/pexels-photo-132037.jpeg",
+    subtitle: "Streets are crowded, noisy, and worn,\nTrash and chaos mark the city’s morn.\n\nYet the sun rises, bringing a chance to mend,\nThe heart of Karachi will endure and transcend.",
+    image: "/images/7.jpg",
+    imageDescription: "A visual story of Karachi today",
     reverse: false,
   },
 ];
 
+
 export default function ThenVsNowStory() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [lines, setLines] = useState<{path: string, progress: number}[]>([]);
+  const [lines, setLines] = useState<{path: string, length: number, progress: number}[]>([]);
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const pathRefs = useRef<(SVGPathElement | null)[]>([]);
 
   useEffect(() => {
     // Intersection Observer for fade-in animation
@@ -97,7 +101,7 @@ export default function ThenVsNowStory() {
       const windowHeight = window.innerHeight;
       const scrollY = window.scrollY;
 
-      const newLines: {path: string, progress: number}[] = [];
+      const newLines: {path: string, length: number, progress: number}[] = [];
 
       for (let i = 0; i < texts.length - 1; i++) {
         const rect1 = texts[i].getBoundingClientRect();
@@ -116,19 +120,25 @@ export default function ThenVsNowStory() {
 
         const path = `M${x1},${y1} C${cx1},${cy1} ${cx2},${cy2} ${x2},${y2}`;
 
+        // Get actual path length from the rendered SVG path
+        const pathElement = pathRefs.current[i];
+        const pathLength = pathElement?.getTotalLength() || 1000;
+
         // Calculate progress based on scroll position
         const lineStartY = rect1.bottom;
         const lineEndY = rect2.top;
-        const lineMidY = (lineStartY + lineEndY) / 2;
 
         // Calculate how much of the line should be visible
         let progress = 0;
-        if (lineMidY < windowHeight + scrollY) {
-          const scrollProgress = (windowHeight + scrollY - lineStartY) / (lineEndY - lineStartY);
-          progress = Math.min(Math.max(scrollProgress, 0), 1);
+        const viewportBottom = scrollY + windowHeight;
+        
+        if (viewportBottom > lineStartY) {
+          const totalLineHeight = lineEndY - lineStartY;
+          const scrolledPastStart = viewportBottom - lineStartY;
+          progress = Math.min(Math.max(scrolledPastStart / totalLineHeight, 0), 1);
         }
 
-        newLines.push({ path, progress });
+        newLines.push({ path, length: pathLength, progress });
       }
 
       setLines(newLines);
@@ -150,7 +160,7 @@ export default function ThenVsNowStory() {
 
   return (
     <section
-      className="relative py-32 overflow-hidden"
+   id="then-now"   className="relative py-32 overflow-hidden"
       style={{
         backgroundColor: "#F5F1E8",
         backgroundImage:
@@ -174,10 +184,10 @@ export default function ThenVsNowStory() {
       <div className="text-center mb-20 relative">
         <div className="inline-block relative">
           <h1 
-            className="text-6xl md:text-7xl font-serif text-amber-900 tracking-wider mb-4 relative z-10"
+            className="text-6xl font-sans md:text-7xl font-serif text-amber-900 tracking-wider mb-4 relative z-10"
             style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}
           >
-            My Kolachi
+          Then vs Now
           </h1>
           <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-amber-700 to-transparent"></div>
         </div>
@@ -201,20 +211,22 @@ export default function ThenVsNowStory() {
             {/* Text with decorative elements */}
             <div className="md:w-1/2 text-left story-text relative">
               {/* Decorative quote mark */}
-              <div className="absolute -left-8 -top-6 text-8xl text-[var(--color-brown)] opacity-60 font-serif">"</div>
+              <div className="absolute -left-8 -top-10 text-8xl text-amber-800 opacity-60 font-serif">"</div>
               
               <div 
-                className="relative z-10 p-8 bg-white/40 backdrop-blur-sm rounded-lg border-2 border-[var(--color-red)]/40 shadow-xl"
+                className="relative z-10 p-8 bg-white/40 backdrop-blur-sm rounded-lg shadow-xl"
                 style={{ boxShadow: '8px 8px 0px rgba(180, 83, 9, 0.1)' }}
               >
-                <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-[var(--color-brown)]"></div>
-                <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-[var(--color-brown)]"></div>
-                <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-[var(--color-brown)]"></div>
-                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-[var(--color-brown)]"></div>
+                <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-amber-800"></div>
+                <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-amber-800"></div>
+                <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-amber-800"></div>
+                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-amber-800"></div>
                 
                 <h2 
-                  className="text-4xl font-serif font-bold text-amber-900 mb-6 relative"
-                  style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.1)' }}
+                  className="text-4xl font-sans font-bold text-amber-900 mb-6 relative"
+                  style={{ 
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+                  }}
                 >
                   {sec.title}
                   <div className="absolute -bottom-2 left-0 w-16 h-0.5 bg-amber-700"></div>
@@ -262,41 +274,53 @@ export default function ThenVsNowStory() {
                   
                   {/* Photo caption */}
                   <div className="mt-3 text-center">
-                    <p className="text-sm text-amber-800 font-serif italic">Chapter {index + 1}</p>
+                    <p className="text-sm text-amber-800 font-serif italic">{sections[index].imageDescription}</p>
                   </div>
                 </div>
 
                 {/* Corner pins */}
-                <div className="absolute -top-2 -left-2 w-4 h-4 bg-[var(--color-brown)] rounded-full shadow-lg z-30"></div>
-                <div className="absolute -top-2 -right-2 w-4 h-4 bg-[var(--color-brown)] rounded-full shadow-lg z-30"></div>
+                <div className="absolute -top-2 -left-2 w-4 h-4 bg-amber-800 rounded-full shadow-lg z-30"></div>
+                <div className="absolute -top-2 -right-2 w-4 h-4 bg-amber-800 rounded-full shadow-lg z-30"></div>
               </div>
             </div>
           </div>
         ))}
 
-        {/* Enhanced wavy dotted lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          {lines.map((d, i) => (
-            <g key={i}>
-              <path
-                d={d.path}
-                stroke="#C2410C"
-                strokeWidth="2"
-                strokeDasharray="10 10"
-                fill="transparent"
-                opacity="0.3"
-              />
-              <path
-                d={d.path}
-                stroke="#D97706"
-                strokeWidth="1"
-                strokeDasharray="10 10"
-                fill="transparent"
-                opacity="0.5"
-                strokeDashoffset="5"
-              />
-            </g>
-          ))}
+        {/* Enhanced wavy dotted lines with scroll animation */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+          {lines.map((line, i) => {
+            const dashOffset = line.length * (1 - line.progress);
+
+            return (
+              <g key={i}>
+                {/* Main dotted line */}
+                <path
+                  ref={(el) => { pathRefs.current[i] = el; }}
+                  d={line.path}
+                  stroke="#C2410C"
+                  strokeWidth="4"
+                  strokeDasharray="10 10"
+                  strokeDashoffset={dashOffset}
+                  fill="transparent"
+                  opacity="0.5"
+                 
+                />
+                {/* Secondary dotted line with offset */}
+                <path
+                  d={line.path}
+                  stroke="#D97706"
+                  strokeWidth="1"
+                  strokeDasharray="10 10"
+                  strokeDashoffset={dashOffset - 5}
+                  fill="transparent"
+                  opacity="0.5"
+                  style={{
+                    transition: 'stroke-dashoffset 0.1s linear'
+                  }}
+                />
+              </g>
+            );
+          })}
         </svg>
       </div>
 
