@@ -4,6 +4,7 @@ import Herosec from "@/components/sections/Herosec";
 import Geography from "@/components/sections/Geography";
 import Origins from "@/components/sections/Origins";
 import Culture from "@/components/sections/Culture";
+import ThenVsNow from "@/components/sections/ThenvsNow";
 import {Tribute} from "@/components/sections/Tribute";
 import Footer from "@/components/sections/Footer";
 
@@ -47,6 +48,7 @@ export default function Home() {
       <Geography />
       <Origins />
       <Culture />
+      <ThenVsNow/>
       <Tribute/>
     <Footer/>
     </div>
