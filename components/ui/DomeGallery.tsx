@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useCallback } from 'react';
+import { useEffect, useMemo, useRef, useCallback, useState } from 'react';
 import { useGesture } from '@use-gesture/react';
 
 type ImageItem = string | { src: string; alt?: string };
@@ -183,6 +183,10 @@ export default function DomeGallery({
   const openingRef = useRef(false);
   const openStartedAtRef = useRef(0);
   const lastDragEndAt = useRef(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const scrollY = useRef(0);
+  const targetRotationY = useRef(0);
+  const isAutoRotating = useRef(false);
 
   const scrollLockedRef = useRef(false);
   const lockScroll = useCallback(() => {
@@ -207,6 +211,37 @@ export default function DomeGallery({
   };
 
   const lockedRadiusRef = useRef<number | null>(null);
+
+  // Handle scroll-based rotation
+  useEffect(() => {
+    if (openingRef.current || draggingRef.current) return;
+
+    const handleScroll = () => {
+      if (openingRef.current || draggingRef.current) return;
+      
+      const scrollY = window.scrollY;
+      // Reduced sensitivity for smoother, slower rotation
+      const newRotationY = scrollY * 0.05;
+      
+      // Update rotation directly based on scroll position
+      rotationRef.current.y = newRotationY;
+      applyTransform(rotationRef.current.x, rotationRef.current.y);
+    };
+    
+    // Use requestAnimationFrame for smoother animation
+    let animationFrameId: number;
+    const scrollHandler = () => {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(handleScroll);
+    };
+    
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('scroll', scrollHandler);
+    };
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;

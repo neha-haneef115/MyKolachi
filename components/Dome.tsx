@@ -1,22 +1,11 @@
 "use client";
-
-import React, { useEffect, useRef, useState } from "react";
 import DomeGallery from "@/components/ui/DomeGallery";
 import FuzzyText from '@/components/FuzzyText';
 
 const Dome = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [rotation, setRotation] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const scrollStartRef = useRef<number | null>(null);
-
-
-
-  return (
+ return (
     <div 
-      
-      className="relative bg-black w-full h-screen"
-     
+       className="relative bg-black w-full h-screen"
     >
       <div 
         className="w-full h-full"
