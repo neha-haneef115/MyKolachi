@@ -141,104 +141,44 @@ interface CultureItem {
 
 // Unique images for each section
 const foodImages = [
-  { 
-    id: 1, 
-    img: "https://i.pinimg.com/1200x/38/b5/7e/38b57e590aeb71f3478db74388f48c49.jpg"
-  },{ 
-    id: 2, 
-    img: "https://cdn.shopify.com/s/files/1/0570/2113/6986/files/Shahi_Haleem_Tin_-_Chicken_Haleem_Chicken_Haleem_Can_-_Tin_Packed_-_Net_Weight_800_Grams_Canned_-_Ready_To_Eat_-_Tasty_Food.jpg?v=1661855762" 
-  },
-  { 
-    id: 3, 
-    img: "https://ticklethosetastebuds.com/wp-content/uploads/2021/07/1-724x1024.png" 
-  },
-  { 
-    id: 4, 
-    img: "https://i.pinimg.com/1200x/8c/4f/01/8c4f018f5be2e7fbfb7a71017244d9d6.jpg" 
-  }
+  { id: 1, img: "https://i.pinimg.com/1200x/38/b5/7e/38b57e590aeb71f3478db74388f48c49.jpg" },
+  { id: 2, img: "https://cdn.shopify.com/s/files/1/0570/2113/6986/files/Shahi_Haleem_Tin_-_Chicken_Haleem_Chicken_Haleem_Can_-_Tin_Packed_-_Net_Weight_800_Grams_Canned_-_Ready_To_Eat_-_Tasty_Food.jpg?v=1661855762" },
+  { id: 3, img: "https://ticklethosetastebuds.com/wp-content/uploads/2021/07/1-724x1024.png" },
+  { id: 4, img: "https://i.pinimg.com/1200x/8c/4f/01/8c4f018f5be2e7fbfb7a71017244d9d6.jpg" }
 ];
 
 const peopleImages = [
-  { 
-    id: 1, 
-    img: "https://i.pinimg.com/736x/2b/4f/a7/2b4fa79458a9b359937164adfd70ece8.jpg" 
-  },
-  { 
-    id: 2, 
-    img: "https://www.arabnews.com/sites/default/files/styles/n_670_395/public/2024/09/27/4528573-869018640.jpg?itok=v_Mt2aBn" 
-  },
-  { 
-    id: 3, 
-    img: "https://i.pinimg.com/originals/f3/01/89/f30189a08d3d6d76d0f6339ba3b26238.jpg" 
-  },
-  { 
-    id: 4, 
-    img: "https://i.pinimg.com/736x/d1/02/de/d102de8145cdd05f337ebaa40892f767.jpg" 
-  }
+  { id: 1, img: "https://i.pinimg.com/736x/2b/4f/a7/2b4fa79458a9b359937164adfd70ece8.jpg" },
+  { id: 2, img: "https://www.arabnews.com/sites/default/files/styles/n_670_395/public/2024/09/27/4528573-869018640.jpg?itok=v_Mt2aBn" },
+  { id: 3, img: "https://i.pinimg.com/originals/f3/01/89/f30189a08d3d6d76d0f6339ba3b26238.jpg" },
+  { id: 4, img: "https://i.pinimg.com/736x/d1/02/de/d102de8145cdd05f337ebaa40892f767.jpg" }
 ];
 
 const festivitiesImages = [
-  { 
-    id: 1, 
-    img: "https://i.pinimg.com/736x/1f/e8/14/1fe814d16bb4927a094d034a569f23ed.jpg" 
-  },
-  { 
-    id: 2, 
-    img: "https://www.arabnews.pk/sites/default/files/2023/03/08/3714926-1717315363.jpeg" 
-  },
-  { 
-    id: 3, 
-    img: "https://i.pinimg.com/1200x/8d/0e/8e/8d0e8e4f589f3613954a331b12d64fa4.jpg" 
-  },
-  { 
-    id: 4, 
-    img: "https://i.pinimg.com/736x/1c/59/e1/1c59e1b61ba0967a2b270438fbd7fafa.jpg" 
-  }
+  { id: 1, img: "https://i.pinimg.com/736x/1f/e8/14/1fe814d16bb4927a094d034a569f23ed.jpg" },
+  { id: 2, img: "https://www.arabnews.pk/sites/default/files/2023/03/08/3714926-1717315363.jpeg" },
+  { id: 3, img: "https://i.pinimg.com/1200x/8d/0e/8e/8d0e8e4f589f3613954a331b12d64fa4.jpg" },
+  { id: 4, img: "https://i.pinimg.com/736x/1c/59/e1/1c59e1b61ba0967a2b270438fbd7fafa.jpg" }
 ];
 
 const artImages = [
-  { 
-    id: 1, 
-    img: "https://i.pinimg.com/1200x/66/96/e8/6696e8d2d9cb1e274321b2eeefc20ecb.jpg" 
-  },
-  { 
-    id: 2, 
-    img: "https://tripjive.com/wp-content/uploads/2024/11/street-art-in-Karachis-neighborhoods-1024x585.jpg" 
-  },
-  { 
-    id: 3, 
-    img: "https://www.researchgate.net/publication/336105883/figure/fig4/AS:807794341060614@1569604587494/Truck-Art-Karachi-Pakistan.png" 
-  },
-  { 
-    id: 4, 
-    img: "https://i.dawn.com/primary/2023/09/650f687e556a6.jpg" 
-  }
+  { id: 1, img: "https://i.pinimg.com/1200x/66/96/e8/6696e8d2d9cb1e274321b2eeefc20ecb.jpg" },
+  { id: 2, img: "https://tripjive.com/wp-content/uploads/2024/11/street-art-in-Karachis-neighborhoods-1024x585.jpg" },
+  { id: 3, img: "https://www.researchgate.net/publication/336105883/figure/fig4/AS:807794341060614@1569604587494/Truck-Art-Karachi-Pakistan.png" },
+  { id: 4, img: "https://i.dawn.com/primary/2023/09/650f687e556a6.jpg" }
 ];
 
 const musicImages = [
-  { 
-    id: 1, 
-    img: "https://aifd.edu.pk/wp-content/gallery/qawali-night-2024/qawali-night-24-large-12.jpg" 
-  },
-  { 
-    id: 2, 
-    img: "https://i.tribune.com.pk/media/images/19516-CONCERT_ANUSHAYFURQANx-1384942725/19516-CONCERT_ANUSHAYFURQANx-1384942725.jpg" 
-  },
-  { 
-    id: 3, 
-    img: "https://propakistani.pk/lens/wp-content/uploads/2025/05/danceday-13.jpg" 
-  },
-  { 
-    id: 4, 
-    img: "https://www.artscouncil.org.pk/wp-content/uploads/2019/12/Celebratiing-Historian-Dr.-Mubarak-Ali-at-Arts-Council-Karachi-1-1024x683.jpg" 
-  }
+  { id: 1, img: "https://aifd.edu.pk/wp-content/gallery/qawali-night-2024/qawali-night-24-large-12.jpg" },
+  { id: 2, img: "https://i.tribune.com.pk/media/images/19516-CONCERT_ANUSHAYFURQANx-1384942725/19516-CONCERT_ANUSHAYFURQANx-1384942725.jpg" },
+  { id: 3, img: "https://propakistani.pk/lens/wp-content/uploads/2025/05/danceday-13.jpg" },
+  { id: 4, img: "https://www.artscouncil.org.pk/wp-content/uploads/2019/12/Celebratiing-Historian-Dr.-Mubarak-Ali-at-Arts-Council-Karachi-1-1024x683.jpg" }
 ];
 
 const cultureData: CultureItem[] = [
   {
     title: 'Traditional Food',
-    description:
-      "From spicy biryani to flavorful nihari, Karachi's cuisine reflects a fusion of cultures and generations. Every dish tells a story of migration, heritage, and taste.",
+    description: "From spicy biryani to flavorful nihari, Karachi's cuisine reflects a fusion of cultures and generations. Every dish tells a story of migration, heritage, and taste.",
     stats: [
       { label: 'Cuisines', value: '70+' },
       { label: 'Food Streets', value: '100+' }
@@ -248,8 +188,7 @@ const cultureData: CultureItem[] = [
   },
   {
     title: 'People of Karachi',
-    description:
-      'Known for their warmth, resilience, and diversity, the people of Karachi bring unmatched energy to every street and community.',
+    description: 'Known for their warmth, resilience, and diversity, the people of Karachi bring unmatched energy to every street and community.',
     stats: [
       { label: 'Population', value: '20M+' },
       { label: 'Languages', value: '20+' }
@@ -259,8 +198,7 @@ const cultureData: CultureItem[] = [
   },
   {
     title: 'Festivities',
-    description:
-      'Karachi celebrates every occasion with unmatched enthusiasm. From Eid to Christmas, Diwali to Basant, the city unites in color and joy.',
+    description: 'Karachi celebrates every occasion with unmatched enthusiasm. From Eid to Christmas, Diwali to Basant, the city unites in color and joy.',
     stats: [
       { label: 'Annual Events', value: '300+' },
       { label: 'Communities', value: '60+' }
@@ -270,8 +208,7 @@ const cultureData: CultureItem[] = [
   },
   {
     title: 'Art & Architecture',
-    description:
-      'The city showcases colonial-era architecture, modern design, and vibrant street and truck art — a reflection of Karachi’s layered identity.',
+    description: 'The city showcases colonial-era architecture, modern design, and vibrant street and truck art — a reflection of Karachi\'s layered identity.',
     stats: [
       { label: 'Heritage Sites', value: '40+' },
       { label: 'Art Galleries', value: '50+' }
@@ -281,8 +218,7 @@ const cultureData: CultureItem[] = [
   },
   {
     title: 'Music & Dance',
-    description:
-      "Karachi's creative pulse beats through its music — from qawwali and classical performances to rock, hip-hop, and indie sounds.",
+    description: "Karachi's creative pulse beats through its music — from qawwali and classical performances to rock, hip-hop, and indie sounds.",
     stats: [
       { label: 'Music Venues', value: '80+' },
       { label: 'Artists', value: '2000+' }
@@ -291,8 +227,6 @@ const cultureData: CultureItem[] = [
     images: musicImages,
   },
 ];
-
-
 
 // Counting animation component
 const AnimatedCounter = ({ value, label }: { value: string; label: string }) => {
@@ -352,17 +286,11 @@ const AnimatedCounter = ({ value, label }: { value: string; label: string }) => 
     : count.toString();
 
   return (
-    <div ref={ref} className="stat-item bg-[#F2E9E2] rounded-2xl px-6 py-4 shadow-lg  transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-      <div 
-        className="text-3xl font-bold text-[#c1553d] font-serif"
-        style={{ fontFamily: 'Montserrat, serif' }}
-      >
+    <div ref={ref} className="stat-item bg-[#F2E9E2] rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+      <div className="text-2xl sm:text-3xl font-bold text-[#c1553d] font-serif" style={{ fontFamily: 'Montserrat, serif' }}>
         {isVisible ? displayValue : '0'}
       </div>
-      <div 
-        className="text-sm text-[#8a7a6a] font-medium"
-        style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
-      >
+      <div className="text-xs sm:text-sm text-[#8a7a6a] font-medium" style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}>
         {label}
       </div>
     </div>
@@ -371,10 +299,24 @@ const AnimatedCounter = ({ value, label }: { value: string; label: string }) => 
 
 export default function CultureSection() {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    // Only apply animations on desktop
+    if (isMobile) return;
+
     sectionRefs.current.forEach((el) => {
-      if (!el) return; // Skip if element is null
+      if (!el) return;
       
       const image = el.querySelector('.culture-image');
       const text = el.querySelector('.culture-text');
@@ -450,13 +392,12 @@ export default function CultureSection() {
         }
       );
     });
-  }, []);
+  }, [isMobile]);
 
   return (
-    <section className="py-28 relative overflow-hidden " id="culture">
-      {/* Background Pattern - More Visible */}
+    <section className="py-16 sm:py-20 md:py-28 relative overflow-hidden" id="culture">
+      {/* Background Pattern */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Main geometric pattern */}
         <div 
           className="absolute inset-0 opacity-[0.08]"
           style={{
@@ -469,7 +410,6 @@ export default function CultureSection() {
           }}
         />
         
-        {/* Diagonal line pattern */}
         <div 
           className="absolute inset-0 opacity-[0.06]"
           style={{
@@ -481,7 +421,6 @@ export default function CultureSection() {
           }}
         />
         
-        {/* Dot grid pattern */}
         <div 
           className="absolute inset-0 opacity-[0.05]"
           style={{
@@ -490,137 +429,112 @@ export default function CultureSection() {
           }}
         />
 
-        {/* Large circle top right */}
         <div 
-          className="absolute rounded-full "
-          style={{
-            width: '600px',
-            height: '600px',
-            backgroundColor: 'var(--color-red)',
-            top: '-250px',
-            right: '-400px',
-          }}
-        />
-        
-        {/* Medium circle bottom left */}
-        <div 
-          className="absolute rounded-full "
-          style={{
-            width: '600px',
-            height: '600px',
-            backgroundColor: 'var(--color-red)',
-            bottom: '-400px',
-            left: '-350px',
-          }}
-        />
-        
-        {/* Circle on left side */}
-        <div 
-          className="absolute rounded-full "
+          className="absolute rounded-full"
           style={{
             width: '400px',
             height: '400px',
             backgroundColor: 'var(--color-red)',
-            top: '30%',
-            left: '-250px',
-          }}
-        />
-
-        {/* Circle on right side */}
-        <div 
-          className="absolute rounded-full"
-          style={{
-            width: '350px',
-            height: '350px',
-            backgroundColor: 'var(--color-red)',
-            bottom: '20%',
-            right: '-250px',
+            opacity: 0.1,
+            top: '-200px',
+            right: '-200px',
           }}
         />
         
-        {/* Subtle gradient overlay to soften patterns */}
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent"></div>
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '400px',
+            height: '400px',
+            backgroundColor: 'var(--color-red)',
+            opacity: 0.1,
+            bottom: '-200px',
+            left: '-200px',
+          }}
+        />
       </div>
 
-      {/* Centered Content Container - 800px max width */}
-      <div className="max-w-[1036px] mx-auto px-6 relative z-10">
-        <div className="flex flex-col gap-22">
-          {cultureData.map((item, index) => (
-            <div
-              key={index}
-              ref={el => { sectionRefs.current[index] = el }}
-              className="flex flex-col lg:flex-row items-center justify-center"
-            >
-              {/* Image Container - Left side with 2x gap */}
-              <div className={`culture-image w-full lg:w-[45%] flex justify-center relative ${
-                index % 2 !== 0 ? 'lg:order-2 ' : 'lg:order-1 lg:mr-2'
-              }`}>
-                <Stack
-                  randomRotation={false}
-                  sensitivity={180}
-                  sendToBackOnClick={false}
-                  cardDimensions={{ width: 420, height:480 }}
-                  cardsData={item.images}
-                />
-                
-                {/* Floating decorative element */}
-                <div className={`absolute -z-10 w-20 h-20 rounded-full bg-gradient-to-r from-[#5a3e2b]/20 to-[#c1553d]/20 blur-lg ${
-                  index % 2 === 0 ? '-left-4 -bottom-4' : '-right-4 -bottom-4'
-                }`}></div>
-              </div>
+      {/* Content Container */}
+      <div className="max-w-[1036px] mx-auto px-4 sm:px-6 relative z-10">
+        <div className="flex flex-col gap-16 sm:gap-20 md:gap-22">
+          {cultureData.map((item, index) => {
+            const cardWidth = isMobile ? 280 : 420;
+            const cardHeight = isMobile ? 320 : 480;
 
-              {/* Text Container - Right side with 2x gap */}
-              <div className={`culture-text w-full lg:w-[60%] text-center lg:text-left ${
-                index % 2 !== 0 ? 'lg:order-1 lg:mr-22' : 'lg:order-2 lg:ml-32'
-              }`}>
-                <div className="relative">
-                  {/* Heading - Montserrat */}
-                  <h3 
-                    className="text-3xl md:text-5xl font-medium text-[#5a3e2b] mb-4 leading-tight font-serif"
-                    style={{ fontFamily: 'Montserrat, serif', fontWeight: 700 }}
-                  >
-                    {item.title}
-                  </h3>
+            return (
+              <div
+                key={index}
+                ref={el => { sectionRefs.current[index] = el }}
+                className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-0"
+              >
+                {/* Image Container */}
+                <div className={`culture-image w-full lg:w-[45%] flex justify-center relative ${
+                  index % 2 !== 0 ? 'lg:order-2' : 'lg:order-1 lg:mr-2'
+                }`}>
+                  <Stack
+                    randomRotation={false}
+                    sensitivity={180}
+                    sendToBackOnClick={false}
+                    cardDimensions={{ width: cardWidth, height: cardHeight }}
+                    cardsData={item.images}
+                  />
                   
-                  {/* Description - Geist Sans */}
-                  <p 
-                    className="text-[#6b5b4b] text-base md:text-lg leading-relaxed font-semibold tracking-wide mb-6"
-                    style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
-                  >
-                    {item.description}
-                  </p>
+                  <div className={`absolute -z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-[#5a3e2b]/20 to-[#c1553d]/20 blur-lg ${
+                    index % 2 === 0 ? '-left-4 -bottom-4' : '-right-4 -bottom-4'
+                  }`}></div>
+                </div>
 
-                  {/* Stats with animated counters */}
-                  <div className="flex gap-4 mb-6 justify-center lg:justify-start flex-wrap">
-                    {item.stats.map((stat, i) => (
-                      <AnimatedCounter key={i} value={stat.value} label={stat.label} />
-                    ))}
-                  </div>
+                {/* Text Container */}
+                <div className={`culture-text w-full lg:w-[60%] text-center lg:text-left px-4 sm:px-0 ${
+                  index % 2 !== 0 ? 'lg:order-1 lg:mr-22' : 'lg:order-2 lg:ml-32'
+                }`}>
+                  <div className="relative">
+                    <h3 
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-[#5a3e2b] mb-3 sm:mb-4 leading-tight font-serif"
+                      style={{ fontFamily: 'Montserrat, serif', fontWeight: 700 }}
+                    >
+                      {item.title}
+                    </h3>
+                    
+                    <p 
+                      className="text-[#6b5b4b] text-sm sm:text-base md:text-lg leading-relaxed font-semibold tracking-wide mb-4 sm:mb-6"
+                      style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
+                    >
+                      {item.description}
+                    </p>
 
-                  {/* Highlights - Geist Sans */}
-                  <div className="space-y-2 mb-6">
-                    {item.highlights.map((highlight, i) => (
-                      <div
-                        key={i}
-                        className="highlight-item flex items-center gap-2 justify-center lg:justify-start group"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#c1553d] group-hover:scale-150 transition-transform duration-300"></div>
-                        <span 
-                          className="text-[#6b5b4b] font-semibold text-base group-hover:text-[#5a3e2b] transition-colors duration-300"
-                          style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
+                    {/* Stats */}
+                    <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-6 justify-center lg:justify-start flex-wrap">
+                      {item.stats.map((stat, i) => (
+                        <AnimatedCounter key={i} value={stat.value} label={stat.label} />
+                      ))}
+                    </div>
+
+                    {/* Highlights */}
+                    <div className="space-y-2 mb-4 sm:mb-6">
+                      {item.highlights.map((highlight, i) => (
+                        <div
+                          key={i}
+                          className="highlight-item flex items-center gap-2 justify-center lg:justify-start group"
                         >
-                          {highlight}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#c1553d] group-hover:scale-150 transition-transform duration-300"></div>
+                          <span 
+                            className="text-[#6b5b4b] font-semibold text-sm sm:text-base group-hover:text-[#5a3e2b] transition-colors duration-300"
+                            style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
+                          >
+                            {highlight}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
 
-                  {/* Decorative Line */}
-                  <div className="mt-4 h-1 w-24 bg-gradient-to-r from-[#5a3e2b] to-[#c1553d] rounded-full mx-auto lg:mx-0"></div>
+                    {/* Decorative Line */}
+                    <div className="mt-4 h-1 w-16 sm:w-24 bg-gradient-to-r from-[#5a3e2b] to-[#c1553d] rounded-full mx-auto lg:mx-0"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

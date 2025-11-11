@@ -5,14 +5,14 @@ import FuzzyText from '@/components/FuzzyText';
 const Dome = () => {
  return (
     <div 
-       className="relative bg-black w-full h-screen"
+       className="relative bg-black w-full h-[320px] h-screen"
     >
       <div 
         className="w-full h-full"
      
       >
         <DomeGallery 
-          minRadius={900}
+          minRadius={300}
           maxRadius={2000}
           fit={0.8}
         />
