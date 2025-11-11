@@ -110,16 +110,18 @@ const KarachiTimeline = () => {
     totalEventWidth: 0
   });
 
-  const eventWidth = 350;
+  const eventWidth = 360;
   const eventGap = 100;
-  const totalEventWidth = events.length * (eventWidth + eventGap);
+  const endPadding = 5; // Additional padding for the last item
+  const totalEventWidth = (events.length * (eventWidth + eventGap)) + endPadding;
 
   useEffect(() => {
     // This effect runs only on the client side
     const updateDimensions = () => {
       const viewportWidth = window.innerWidth;
       const startOffset = viewportWidth / 2 - eventWidth / 2;
-      const maxScroll = totalEventWidth - viewportWidth / 2 - eventWidth / 2;
+      // Add viewport width to maxScroll to ensure last item is fully visible
+      const maxScroll = totalEventWidth - viewportWidth / 2 - eventWidth / 2 + viewportWidth * 0.1;
       const horizontalOffset = startOffset - (scrollProgress * maxScroll);
       
       setDimensions({
@@ -191,7 +193,7 @@ const KarachiTimeline = () => {
 
 
           {/* Timeline Container - Centered */}
-          <div className="flex-1 pt-5 flex items-center w-full overflow-hidden">
+          <div className="flex-1 pt-5 flex items-center w-full overflow-x-visible" style={{ paddingRight: '200px' }}>
             <div 
               className="relative w-full transition-transform duration-500 ease-out"
               style={{

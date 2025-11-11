@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { motion, useDragControls } from "framer-motion";
+import styles from "./scrollbar.module.css";
 
 export const InfiniteMovingCards = ({
   items,
@@ -29,10 +30,46 @@ export const InfiniteMovingCards = ({
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [dragStartX, setDragStartX] = useState(0);
   const [scrollLeftStart, setScrollLeftStart] = useState(0);
+  const [isShiftPressed, setIsShiftPressed] = useState(false);
 
   useEffect(() => {
     addAnimation();
-  }, []);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(true);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(false);
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (isShiftPressed && scrollerRef.current) {
+        e.preventDefault();
+        scrollerRef.current.scrollLeft += e.deltaY;
+      }
+    };
+
+    const scroller = scrollerRef.current;
+    if (scroller) {
+      scroller.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      if (scroller) {
+        scroller.removeEventListener('wheel', handleWheel);
+      }
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [isShiftPressed]);
   function addAnimation() {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -104,6 +141,7 @@ export const InfiniteMovingCards = ({
           "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4 cursor-grab active:cursor-grabbing",
           start && !isDragging && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]",
+          isShiftPressed && "cursor-ew-resize"
         )}
         style={{
           userSelect: 'none',
@@ -113,14 +151,23 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <motion.li
-            className="w-[380px] flex-shrink-0 rounded-2xl p-8 shadow-2xl border border-white/15 backdrop-blur-md bg-white/10"
+            className="w-[380px] h-[305px] flex-shrink-0 rounded-2xl p-8 shadow-2xl border border-white/15 backdrop-blur-md bg-white/10 flex flex-col"
             key={item.name}
             onHoverStart={() => !isDragging && setHoveredCard(item.name)}
             onHoverEnd={() => setHoveredCard(null)}
             animate={{
-              scale: hoveredCard === item.name && !isDragging ? 1.05 : 1,
-              y: hoveredCard === item.name && !isDragging ? -5 : 0,
-              transition: { type: "spring", stiffness: 250 }
+              y: hoveredCard === item.name && !isDragging ? -3 : 0,
+              boxShadow: hoveredCard === item.name && !isDragging 
+                ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' 
+                : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              borderColor: hoveredCard === item.name && !isDragging 
+                ? 'rgba(255, 255, 255, 0.3)' 
+                : 'rgba(255, 255, 255, 0.15)',
+              transition: { 
+                type: "spring", 
+                stiffness: 300,
+                damping: 20
+              }
             }}
           >
             <div className="mb-6">
@@ -132,12 +179,14 @@ export const InfiniteMovingCards = ({
                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
               </svg>
             </div>
-            <p className="text-white text-lg leading-relaxed mb-6 font-medium">
-              "{item.quote}"
-            </p>
-            <div>
-              <p className="font-bold text-[#943204] text-lg">{item.name}</p>
-              <p className="text-gray-400 text-sm">{item.title}</p>
+            <div className={`flex-1 overflow-y-auto pr-2 mb-6 ${styles.customScrollbar}`}>
+              <p className="text-white text-lg leading-relaxed font-medium">
+                "{item.quote}"
+              </p>
+            </div>
+            <div className="mt-auto pt-4 border-t border-white/10">
+              <p className="font-bold text-[#943204] text-lg truncate">{item.name}</p>
+              <p className="text-gray-400 text-sm truncate">{item.title}</p>
             </div>
           </motion.li>
         ))}
