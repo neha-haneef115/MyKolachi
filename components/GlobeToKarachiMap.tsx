@@ -192,8 +192,8 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
-.atmosphereColor('#3a9bdc') // soft bluish glow
-.atmosphereAltitude(0.2) 
+          .atmosphereColor('#3a9bdc')
+          .atmosphereAltitude(0.2) 
           .pointOfView({ lat: 20, lng: 70, altitude: 2.5 });
 
         const karachi = {
@@ -355,13 +355,12 @@ const TypingText: React.FC = () => {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
 
   const lines = [
-  'City: Karachi, the pulse of Pakistan',
-'Population: Around 20 million',
-'Area: 591 square kilometers',
-'Founded: 1729 as Kolachi village',
-'Known for: Seaport, culture, and diversity',
-'Spirit: A city that never sleeps'
-
+    'City: Karachi, the pulse of Pakistan',
+    'Population: Around 20 million',
+    'Area: 3,530 square kilometers',
+    'Founded: 1729 as Kolachi village',
+    'Known for: Seaport, culture, and diversity',
+    'Spirit: A city that never sleeps'
   ];
 
   useEffect(() => {
@@ -389,11 +388,11 @@ const TypingText: React.FC = () => {
   }, [currentCharIndex, currentLineIndex]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-5 lg:space-y-6">
       {displayedLines.map((line, index) => (
         <div
           key={index}
-          className="text-md font-light leading-[17px]"
+          className="text-sm sm:text-base lg:text-md font-light leading-relaxed"
           style={{
             color: '#F2E9E2',
             fontFamily: 'Geist, sans-serif',
@@ -404,7 +403,7 @@ const TypingText: React.FC = () => {
           {line}
           {index === currentLineIndex && currentCharIndex === line.length && (
             <span 
-              className="inline-block w-0.5 h-4 ml-1 animate-pulse" 
+              className="inline-block w-0.5 h-3 sm:h-4 ml-1 animate-pulse" 
               style={{ backgroundColor: '#943204' }}
             />
           )}
@@ -428,7 +427,6 @@ const SystemStatus: React.FC<{ phase: AnimationPhase }> = ({ phase }) => {
     const interval = setInterval(updateTime, 1000);
     updateTime();
 
-    // Simulate CPU load changes
     const cpuInterval = setInterval(() => {
       setCpuLoad(Math.floor(Math.random() * 40) + 10);
     }, 2000);
@@ -440,13 +438,13 @@ const SystemStatus: React.FC<{ phase: AnimationPhase }> = ({ phase }) => {
   }, []);
 
   return (
-    <div className="flex items-center gap-6 text-xs">
+    <div className="flex items-center gap-3 sm:gap-4 lg:gap-6 text-xs overflow-hidden">
       <div className="flex items-center gap-2">
         <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
         <span style={{ color: 'rgba(242, 233, 226, 0.7)' }}>ONLINE</span>
       </div>
       <div className="flex items-center gap-2">
-        <span style={{ color: 'rgba(242, 233, 226, 0.5)' }}>CPU:</span>
+        <span style={{ color: 'rgba(100, 75, 57, 0.5)' }}>CPU:</span>
         <span style={{ color: '#943204' }}>{cpuLoad}%</span>
       </div>
       <div style={{ color: 'rgba(242, 233, 226, 0.5)' }}>{time}</div>
@@ -457,7 +455,7 @@ const SystemStatus: React.FC<{ phase: AnimationPhase }> = ({ phase }) => {
 // ==================== ANIMATED SEPARATOR ====================
 const AnimatedSeparator: React.FC = () => {
   return (
-    <div className="relative h-4 mx-4">
+    <div className="relative h-4 mx-2 sm:mx-3 lg:mx-4">
       <div 
         className="w-px h-full"
         style={{
@@ -475,13 +473,11 @@ function GlobeToKarachiMap() {
   const [loaded, setLoaded] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
 
-  // Reset animation state when component mounts
   useEffect(() => {
     setPhase('globe');
     setHasAnimated(false);
     setLoaded(true);
     
-    // Cleanup function to reset state when component unmounts
     return () => {
       setPhase('globe');
       setHasAnimated(false);
@@ -496,8 +492,8 @@ function GlobeToKarachiMap() {
 
   return (
     <div 
-      className="relative w-full h-screen overflow-hidden"
-      style={{ backgroundColor: '#000000' }}
+      className="relative w-full h-screen flex flex-col bg-black overflow-hidden"
+      style={{ backgroundColor: '#000000', height: '100vh' }}
     >
       {/* Subtle Grid Overlay */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -506,15 +502,15 @@ function GlobeToKarachiMap() {
             linear-gradient(rgba(148, 50, 4, 0.3) 1px, transparent 1px),
             linear-gradient(90deg, rgba(148, 50, 4, 0.3) 1px, transparent 1px)
           `,
-          backgroundSize: '80px 80px',
+          backgroundSize: '60px 60px',
           width: '100%',
           height: '100%'
         }} />
       </div>
 
-      {/* Enhanced Top Header Bar - Futuristic Software Interface */}
+      {/* Top Header Bar */}
       <div 
-        className="absolute top-0 left-0 right-0 h-16 flex items-center px-8 z-40"
+        className="h-12 sm:h-14 lg:h-16 w-full flex items-center px-3 sm:px-4 lg:px-8 relative z-50"
         style={{ 
           background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(8, 8, 10, 0.85) 100%)',
           backdropFilter: 'blur(20px)',
@@ -525,10 +521,10 @@ function GlobeToKarachiMap() {
         }}
       >
         {/* System Logo and Title */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
           <div className="relative">
             <div 
-              className="w-3 h-3 rounded-sm"
+              className="w-2 h-2 sm:w-3 sm:h-3 rounded-sm"
               style={{ 
                 backgroundColor: '#943204',
                 boxShadow: '0 0 15px rgba(148, 50, 4, 0.6)'
@@ -545,18 +541,18 @@ function GlobeToKarachiMap() {
           
           <div className="flex flex-col">
             <span 
-              className="text-sm font-medium tracking-widest uppercase"
+              className="text-[10px] sm:text-xs lg:text-sm font-medium tracking-wider sm:tracking-widest uppercase"
               style={{ 
                 color: '#943204',
                 fontFamily: 'Orbitron, monospace',
                 fontWeight: 500,
-                letterSpacing: '0.2em'
+                letterSpacing: '0.15em'
               }}
             >
               GEO-SPATIAL OS
             </span>
             <span 
-              className="text-xs font-light tracking-wide"
+              className="text-[9px] sm:text-xs font-light tracking-wide hidden sm:block"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
                 fontFamily: 'Inter Tight, sans-serif'
@@ -567,10 +563,12 @@ function GlobeToKarachiMap() {
           </div>
         </div>
 
-        <AnimatedSeparator />
+        <div className="hidden md:block">
+          <AnimatedSeparator />
+        </div>
 
-        {/* Navigation Status */}
-        <div className="flex items-center gap-6">
+        {/* Navigation Status - Hidden on small screens */}
+        <div className="hidden md:flex items-center gap-4 lg:gap-6">
           <div className="flex flex-col">
             <span 
               className="text-xs font-light tracking-wide"
@@ -593,9 +591,9 @@ function GlobeToKarachiMap() {
           </div>
         </div>
 
-        <div className="ml-auto flex items-center gap-8">
+        <div className="ml-auto flex items-center gap-2 sm:gap-4 lg:gap-8">
           {/* System Metrics */}
-          <div className="flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4 lg:gap-6">
             <div className="text-right">
               <span 
                 className="text-xs font-light block"
@@ -621,33 +619,45 @@ function GlobeToKarachiMap() {
             
             <SystemStatus phase={phase} />
           </div>
+
+          {/* Mobile Status Indicator */}
+          <div className="flex lg:hidden items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-[10px] sm:text-xs" style={{ color: 'rgba(242, 233, 226, 0.7)' }}>
+              ONLINE
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Main Content Container */}
-      <div className="absolute inset-0 flex pt-10">
+      <div className="flex-1 flex p-4 flex-col lg:flex-row pt-12 sm:pt-14 lg:pt-0 relative overflow-y-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         
         {/* Left Panel - Text Content */}
         <div 
-          className="w-1/2 flex items-center justify-center relative"
+          className="w-full lg:w-1/2 flex items-center justify-center relative py-8 sm:py-12 lg:py-0 px-4 sm:px-6 lg:px-0"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? 'translateX(0)' : 'translateX(-20px)',
-            transition: 'opacity 1.2s ease-out, transform 1.2s ease-out'
+            transition: 'opacity 1.2s ease-out, transform 1.2s ease-out',
+            minHeight: '40vh',
+            height: 'auto',
+            maxHeight: '100%',
+            overflow: 'visible'
           }}
         >
-          {/* Vertical Accent Line */}
+          {/* Vertical Accent Line - Hidden on mobile */}
           <div 
-            className="absolute left-0 top-1/4 bottom-1/4 w-px"
+            className="absolute left-0 top-1/4 bottom-1/4 w-px hidden lg:block"
             style={{
               background: 'linear-gradient(180deg, transparent, rgba(148, 50, 4, 0.4), transparent)'
             }}
           />
 
-          <div className="max-w-xl px-5 relative">
-            {/* Minimal Frame Corner - Top Left */}
+          <div className="w-full max-w-xl px-2 sm:px-4 lg:px-5 relative">
+            {/* Minimal Frame Corner - Top Left - Hidden on mobile */}
             <div 
-              className="absolute -top-8 -left-12 w-12 h-12 border-l border-t"
+              className="absolute -top-6 sm:-top-8 -left-8 sm:-left-12 w-8 sm:w-12 h-8 sm:h-12 border-l border-t hidden sm:block"
               style={{ 
                 borderColor: 'rgba(148, 50, 4, 0.3)',
                 opacity: loaded ? 1 : 0,
@@ -656,7 +666,7 @@ function GlobeToKarachiMap() {
             />
 
             <h1 
-              className="text-7xl mb-8 tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 lg:mb-8 tracking-tight"
               style={{
                 color: '#943204',
                 fontFamily: 'Montserrat, serif',
@@ -670,7 +680,7 @@ function GlobeToKarachiMap() {
 
             {/* Glowing Divider */}
             <div 
-              className="w-54 h-px mb-10"
+              className="w-32 sm:w-40 lg:w-54 h-px mb-6 sm:mb-8 lg:mb-10"
               style={{
                 background: 'linear-gradient(90deg, rgba(148, 50, 4, 0.6), transparent)',
                 boxShadow: '0 0 10px rgba(148, 50, 4, 0.4)'
@@ -680,7 +690,7 @@ function GlobeToKarachiMap() {
             <TypingText />
             
             {/* Coordinates Section */}
-            <div className="mt-10 pt-8 relative">
+            <div className="mt-6 sm:mt-8 lg:mt-10 pt-6 sm:pt-8 relative">
               <div 
                 className="absolute top-0 left-0 w-full h-px"
                 style={{
@@ -688,13 +698,13 @@ function GlobeToKarachiMap() {
                 }}
               />
               <div 
-                className="text-xs font-light tracking-wider uppercase flex items-center gap-2"
+                className="text-[10px] sm:text-xs font-light tracking-wider uppercase flex items-center gap-2"
                 style={{ 
                   color: 'rgba(242, 233, 226, 0.5)',
                   fontFamily: 'Inter Tight, sans-serif'
                 }}
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-3 sm:h-3">
                   <circle cx="6" cy="6" r="5" stroke="rgba(148, 50, 4, 0.6)" strokeWidth="0.5"/>
                   <circle cx="6" cy="6" r="1" fill="rgba(148, 50, 4, 0.8)"/>
                 </svg>
@@ -702,9 +712,9 @@ function GlobeToKarachiMap() {
               </div>
             </div>
 
-            {/* Minimal Frame Corner - Bottom Right */}
+            {/* Minimal Frame Corner - Bottom Right - Hidden on mobile */}
             <div 
-              className="absolute -bottom-4 -right-16 w-12 h-12 border-r border-b"
+              className="absolute -bottom-3 sm:-bottom-4 -right-12 sm:-right-16 w-8 sm:w-12 h-8 sm:h-12 border-r border-b hidden sm:block"
               style={{ 
                 borderColor: 'rgba(148, 50, 4, 0.3)',
                 opacity: loaded ? 1 : 0,
@@ -716,31 +726,42 @@ function GlobeToKarachiMap() {
 
         {/* Right Panel - 3D Visualization */}
         <div 
-          className="w-1/2 flex items-center justify-center relative"
+          className="w-full lg:w-1/2 flex items-center justify-center relative h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[calc(100vh-8rem)]"
           style={{
             opacity: loaded ? 1 : 0,
-            transform: loaded ? 'translateX(0)' : 'translateX(20px)',
+            transform: loaded ? 'translateX(0)' : 'translateX(-20px)',
             transition: 'opacity 1.2s ease-out 0.2s, transform 1.2s ease-out 0.2s'
           }}
         >
           {phase === 'globe' && !hasAnimated ? (
-            <div className="w-full h-full flex items-center justify-center -translate-x-90">
-              <GlobeOverlay onZoomStart={handleZoomStart} visible={true} />
+            <div className="w-full h-full flex items-center justify-center lg:justify-start px-2 sm:px-4 lg:px-0">
+              <div className="w-full h-full max-w-[500px] mx-auto lg:-translate-x-90">
+                <GlobeOverlay onZoomStart={handleZoomStart} visible={true} />
+              </div>
             </div>
           ) : (
             <div style={{ 
-              position: 'absolute',
-              top: '45%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '550px',
-              height: '550px',
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              maxWidth: '500px',
+              maxHeight: '500px',
+              margin: '0 auto',
               overflow: 'visible',
               zIndex: 10
             }}>
               <Canvas 
-                camera={{ position: [0, 1, 8], fov: 55 }} 
+                camera={{ 
+                  position: [0, 1, 8], 
+                  fov: 55,
+                  aspect: typeof window !== 'undefined' ? window.innerWidth < 1024 ? 1.5 : 1 : 1
+                }} 
                 gl={{ antialias: true, alpha: true }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  touchAction: 'none'
+                }}
               >
                 <ThreeScene phase={phase} />
               </Canvas>
@@ -749,23 +770,24 @@ function GlobeToKarachiMap() {
         </div>
       </div>
 
-      {/* Enhanced Bottom Info Bar - Futuristic Dashboard */}
+      {/* Bottom Info Bar */}
       <div 
-        className="absolute bottom-0 left-0 right-0 h-12 flex items-center justify-between px-8 z-40"
+        className="h-10 sm:h-12 w-full flex items-center justify-between px-3 sm:px-4 lg:px-8 relative z-40 overflow-hidden flex-shrink-0"
         style={{ 
           background: 'linear-gradient(0deg, rgba(10, 10, 12, 0.95) 0%, rgba(8, 8, 10, 0.85) 100%)',
           backdropFilter: 'blur(20px)',
           borderTop: '1px solid rgba(148, 50, 4, 0.15)',
           boxShadow: '0 0 30px rgba(148, 50, 4, 0.1)',
           opacity: loaded ? 1 : 0,
-          transition: 'opacity 1s ease-in 0.5s'
+          transition: 'opacity 1s ease-in 0.5s',
+          flexShrink: 0
         }}
       >
         {/* Left Section - Location Data */}
-        <div className="flex items-center gap-8">
-          <div className="flex flex-col">
+        <div className="flex items-center gap-1 sm:gap-2 lg:gap-4 min-w-0 flex-shrink-0 overflow-hidden">
+          <div className="flex flex-col min-w-0 overflow-hidden">
             <span 
-              className="text-xs font-light tracking-wider uppercase"
+              className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
                 fontFamily: 'Inter Tight, sans-serif'
@@ -774,7 +796,7 @@ function GlobeToKarachiMap() {
               TARGET LOCATION
             </span>
             <span 
-              className="text-sm font-medium"
+              className="text-xs sm:text-sm font-medium truncate"
               style={{ 
                 color: '#943204',
                 fontFamily: 'Orbitron, monospace'
@@ -786,9 +808,9 @@ function GlobeToKarachiMap() {
 
           <AnimatedSeparator />
 
-          <div className="flex flex-col">
+          <div className="flex flex-col min-w-0 overflow-hidden">
             <span 
-              className="text-xs font-light tracking-wider uppercase"
+              className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
                 fontFamily: 'Inter Tight, sans-serif'
@@ -797,7 +819,7 @@ function GlobeToKarachiMap() {
               ELEVATION
             </span>
             <span 
-              className="text-sm font-mono"
+              className="text-xs sm:text-sm font-mono"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.7)',
                 fontFamily: 'Inter Tight, monospace'
@@ -808,30 +830,30 @@ function GlobeToKarachiMap() {
           </div>
         </div>
 
-        {/* Center Section - System Data */}
-        <div className="flex items-center gap-8">
-          <div className="flex items-center gap-4">
+        {/* Center Section - System Data - Hidden on small screens */}
+        <div className="hidden sm:flex items-center gap-2 lg:gap-4 flex-shrink-0">
+          <div className="flex items-center gap-3 lg:gap-4">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               <span 
-                className="text-xs font-light"
+                className="text-[9px] sm:text-xs font-light whitespace-nowrap"
                 style={{ color: 'rgba(242, 233, 226, 0.6)' }}
               >
                 DATA STREAM
               </span>
             </div>
             
-            <div className="text-xs font-mono" style={{ color: '#943204' }}>
+            <div className="text-[9px] sm:text-xs font-mono truncate max-w-[100px] sm:max-w-none" style={{ color: '#943204' }}>
               {phase === 'globe' ? 'LIVE_SATELLITE' : 'TERRAIN_MESH'}
             </div>
           </div>
         </div>
 
-        {/* Right Section - Technical Info */}
-        <div className="flex items-center gap-8">
-          <div className="flex flex-col text-right">
+        {/* Right Section - Technical Info - Hidden on small screens */}
+        <div className="hidden md:flex items-center gap-2 lg:gap-4 min-w-0 flex-shrink-0">
+          <div className="flex flex-col text-right min-w-0">
             <span 
-              className="text-xs font-light tracking-wider uppercase"
+              className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
                 fontFamily: 'Inter Tight, sans-serif'
@@ -840,7 +862,7 @@ function GlobeToKarachiMap() {
               RESOLUTION
             </span>
             <span 
-              className="text-sm font-mono"
+              className="text-xs sm:text-sm font-mono"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.7)',
                 fontFamily: 'Inter Tight, monospace'
@@ -852,9 +874,9 @@ function GlobeToKarachiMap() {
 
           <AnimatedSeparator />
 
-          <div className="flex flex-col text-right">
+          <div className="flex flex-col text-right min-w-0">
             <span 
-              className="text-xs font-light tracking-wider uppercase"
+              className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
                 fontFamily: 'Inter Tight, sans-serif'
@@ -863,7 +885,7 @@ function GlobeToKarachiMap() {
               TIMESTAMP
             </span>
             <span 
-              className="text-sm font-mono"
+              className="text-xs sm:text-sm font-mono whitespace-nowrap"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.7)',
                 fontFamily: 'Inter Tight, monospace'

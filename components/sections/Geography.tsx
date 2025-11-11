@@ -39,7 +39,7 @@ export default function GeographySection() {
     <section 
       id="geography" 
       ref={sectionRef}
-      className="relative w-full h-screen bg-black "
+      className="relative w-full h-screen bg-black"
     >
       {isVisible && <GlobeToKarachiMap key={key} />}
      

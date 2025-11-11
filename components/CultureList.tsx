@@ -238,9 +238,9 @@ const cultureData: CultureItem[] = [
   {
     title: 'Traditional Food',
     description:
-      'From spicy biryani to flavorful nihari, Karachi\'s cuisine reflects a blend of cultures and generations. Every dish carries a story of heritage and taste.',
+      "From spicy biryani to flavorful nihari, Karachi's cuisine reflects a fusion of cultures and generations. Every dish tells a story of migration, heritage, and taste.",
     stats: [
-      { label: 'Cuisines', value: '50+' },
+      { label: 'Cuisines', value: '70+' },
       { label: 'Food Streets', value: '100+' }
     ],
     highlights: ['Biryani Capital', 'Street Food Paradise', 'Fusion Flavors'],
@@ -249,9 +249,9 @@ const cultureData: CultureItem[] = [
   {
     title: 'People of Karachi',
     description:
-      'Known for their warmth, resilience, and diversity, the people of Karachi bring life to every street and corner of the city.',
+      'Known for their warmth, resilience, and diversity, the people of Karachi bring unmatched energy to every street and community.',
     stats: [
-      { label: 'Population', value: '16M+' },
+      { label: 'Population', value: '20M+' },
       { label: 'Languages', value: '20+' }
     ],
     highlights: ['Multilingual', 'Entrepreneurial Spirit', 'Cultural Diversity'],
@@ -260,10 +260,10 @@ const cultureData: CultureItem[] = [
   {
     title: 'Festivities',
     description:
-      'Karachi celebrates every festival with unmatched spirit. From Eid to Basant, the city shines with color and joy.',
+      'Karachi celebrates every occasion with unmatched enthusiasm. From Eid to Christmas, Diwali to Basant, the city unites in color and joy.',
     stats: [
-      { label: 'Annual Events', value: '200+' },
-      { label: 'Communities', value: '50+' }
+      { label: 'Annual Events', value: '300+' },
+      { label: 'Communities', value: '60+' }
     ],
     highlights: ['Eid Celebrations', 'Cultural Shows', 'Music Festivals'],
     images: festivitiesImages,
@@ -271,10 +271,10 @@ const cultureData: CultureItem[] = [
   {
     title: 'Art & Architecture',
     description:
-      'The city is home to a mix of colonial architecture, modern art, and vibrant truck art that reflect its cultural richness.',
+      'The city showcases colonial-era architecture, modern design, and vibrant street and truck art — a reflection of Karachi’s layered identity.',
     stats: [
-      { label: 'Heritage Sites', value: '30+' },
-      { label: 'Art Galleries', value: '40+' }
+      { label: 'Heritage Sites', value: '40+' },
+      { label: 'Art Galleries', value: '50+' }
     ],
     highlights: ['Truck Art', 'Colonial Buildings', 'Modern Museums'],
     images: artImages,
@@ -282,15 +282,16 @@ const cultureData: CultureItem[] = [
   {
     title: 'Music & Dance',
     description:
-      'Karachi\'s creative heartbeat lies in its music, from qawwali and classical rhythms to modern underground sounds.',
+      "Karachi's creative pulse beats through its music — from qawwali and classical performances to rock, hip-hop, and indie sounds.",
     stats: [
-      { label: 'Music Venues', value: '60+' },
-      { label: 'Artists', value: '1000+' }
+      { label: 'Music Venues', value: '80+' },
+      { label: 'Artists', value: '2000+' }
     ],
     highlights: ['Qawwali Nights', 'Rock Scene', 'Folk Traditions'],
     images: musicImages,
   },
 ];
+
 
 
 // Counting animation component

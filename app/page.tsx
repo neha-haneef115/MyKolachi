@@ -43,7 +43,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <Herosec isPlaying={isPlaying} onToggleAudio={toggleAudio} />
       <Geography />
       <Origins />

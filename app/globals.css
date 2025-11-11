@@ -101,13 +101,13 @@ body {
 }
 .logo {
   font-family: var(--font-alumni);
-  font-size: 45px;
+  
   font-weight: 900;
   color: var(--color-red);
   letter-spacing: 1px;
 }
 .button {
-  font-size: 1.5rem;
+  
   color: #fafafa;
   text-transform: uppercase;
 
