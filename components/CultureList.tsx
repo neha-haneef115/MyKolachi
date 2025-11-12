@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useMotionValue, useTransform } from 'motion/react';
-import { useState } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -297,105 +296,168 @@ const AnimatedCounter = ({ value, label }: { value: string; label: string }) => 
   );
 };
 
+interface LazyLoadImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+}
+
+const LazyLoadImage: React.FC<LazyLoadImageProps> = ({ src, alt, className = '' }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  return (
+    <img
+      src={isLoaded ? src : ''}
+      alt={alt}
+      className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+      loading="lazy"
+      onLoad={() => setIsLoaded(true)}
+    />
+  );
+};
+
 export default function CultureSection() {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+      const mobile = window.innerWidth < 1024;
+      if (mobile !== isMobile) {
+        setIsMobile(mobile);
+      }
     };
     
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    const handleResize = () => {
+      checkMobile();
+    };
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile]);
+  
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observerRef.current?.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    
+    observerRef.current.observe(sectionRef.current);
+    
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {
-    // Only apply animations on desktop
-    if (isMobile) return;
-
-    sectionRefs.current.forEach((el) => {
+    if (!isVisible) return;
+    
+    const cleanupFns: (() => void)[] = [];
+    
+    sectionRefs.current.forEach((el, index) => {
       if (!el) return;
       
-      const image = el.querySelector('.culture-image');
-      const text = el.querySelector('.culture-text');
-      const stats = el.querySelectorAll('.stat-item');
-      const highlights = el.querySelectorAll('.highlight-item');
-
-      gsap.fromTo(
-        image,
-        { y: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      gsap.fromTo(
-        text,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          delay: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      gsap.fromTo(
-        stats,
-        { scale: 0, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.6,
-          delay: 0.4,
-          stagger: 0.1,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      gsap.fromTo(
-        highlights,
-        { x: -30, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.8,
-          delay: 0.6,
-          stagger: 0.15,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
+      // Only animate elements when they come into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !isMobile) {
+            const image = entry.target.querySelector('.culture-image');
+            const text = entry.target.querySelector('.culture-text');
+            const stats = entry.target.querySelectorAll('.stat-item');
+            const highlights = entry.target.querySelectorAll('.highlight-item');
+            
+            // Animate image
+            if (image) {
+              gsap.fromTo(image,
+                { y: 100, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 1.2,
+                  ease: 'power3.out'
+                }
+              );
+            }
+            
+            // Animate text
+            if (text) {
+              gsap.fromTo(text,
+                { y: 60, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 1,
+                  delay: 0.2,
+                  ease: 'power3.out'
+                }
+              );
+            }
+            
+            // Animate stats
+            if (stats.length > 0) {
+              gsap.fromTo(stats,
+                { scale: 0, opacity: 0 },
+                {
+                  scale: 1,
+                  opacity: 1,
+                  duration: 0.6,
+                  delay: 0.4,
+                  stagger: 0.1,
+                  ease: 'back.out(1.7)'
+                }
+              );
+            }
+            
+            // Animate highlights
+            if (highlights.length > 0) {
+              gsap.fromTo(highlights,
+                { x: -30, opacity: 0 },
+                {
+                  x: 0,
+                  opacity: 1,
+                  duration: 0.8,
+                  delay: 0.6,
+                  stagger: 0.15,
+                  ease: 'power2.out'
+                }
+              );
+            }
+            
+            // Unobserve after animation
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      observer.observe(el);
+      cleanupFns.push(() => observer.disconnect());
     });
-  }, [isMobile]);
+    
+    return () => {
+      cleanupFns.forEach(cleanup => cleanup());
+    };
+  }, [isVisible, isMobile]);
 
   return (
-    <section className="py-16 sm:py-20 md:py-28 relative overflow-hidden" id="culture">
+    <section 
+      ref={sectionRef}
+      className="py-16 sm:py-20 md:py-28 relative overflow-hidden" 
+      id="culture"
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
@@ -429,29 +491,58 @@ export default function CultureSection() {
           }}
         />
 
+         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large circle top right */}
         <div 
-          className="absolute rounded-full"
+          className="absolute rounded-full "
           style={{
-            width: '400px',
-            height: '400px',
+            width: '600px',
+            height: '600px',
             backgroundColor: 'var(--color-red)',
-            opacity: 0.1,
-            top: '-200px',
-            right: '-200px',
+            top: '-250px',
+            right: '-400px',
           }}
         />
         
+        {/* Medium circle bottom left */}
         <div 
-          className="absolute rounded-full"
+          className="absolute rounded-full "
+          style={{
+            width: '600px',
+            height: '600px',
+            backgroundColor: 'var(--color-red)',
+            bottom: '-400px',
+            left: '-350px',
+          }}
+        />
+        
+        {/* Circle on left side */}
+        <div 
+          className="absolute rounded-full "
           style={{
             width: '400px',
             height: '400px',
             backgroundColor: 'var(--color-red)',
-            opacity: 0.1,
-            bottom: '-200px',
-            left: '-200px',
+            top: '30%',
+            left: '-250px',
           }}
         />
+
+        {/* Circle on right side */}
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '350px',
+            height: '350px',
+            backgroundColor: 'var(--color-red)',
+            bottom: '20%',
+            right: '-250px',
+          }}
+        />
+        
+        {/* Center accent */}
+        
+      </div>
       </div>
 
       {/* Content Container */}

@@ -21,49 +21,49 @@ const KarachiTimeline = () => {
       title: 'Kolachi Village',
       description: 'A small fishing settlement founded by Baloch families along the Arabian coast.',
       position: 'top',
-      image: '/images/timeline/1.jfif'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927499/1_hqz1rp.jpg'
     },
     {
       year: '1795',
       title: 'Under Talpur Rule',
       description: 'Karachi grew into a modest trading port during the Talpur era.',
       position: 'bottom',
-      image: '/images/timeline/2.jpg'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927500/2_v1sawb.jpg'
     },
     {
       year: '1839',
       title: 'British Arrival',
       description: 'British troops took control of Karachi, marking the start of colonial development.',
       position: 'top',
-      image: '/images/timeline/3.jpg'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927500/3_hydect.jpg'
     },
     {
       year: '1869',
       title: 'Trade Expansion',
       description: 'The opening of the Suez Canal turned Karachi into an important seaport for Asia.',
       position: 'bottom',
-      image: '/images/timeline/4.png'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927500/4_w5odsb.png'
     },
     {
       year: '1947',
       title: 'Independence',
       description: 'Karachi became the first capital of Pakistan after independence.',
       position: 'top',
-      image: '/images/timeline/5.jpg'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927500/5_meglk6.jpg'
     },
     {
       year: '1960',
       title: 'New Capital Established',
       description: 'The capital moved to Islamabad, but Karachi remained the country\'s business center.',
       position: 'bottom',
-      image: '/images/timeline/6.jpg'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927500/6_twblt2.jpg'
     },
     {
       year: 'Today',
       title: 'Modern Karachi',
       description: 'A diverse and dynamic city known for its culture, industry, and resilience.',
       position: 'top',
-      image: '/images/timeline/7.jpg'
+      image: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762927501/7_xuudkg.jpg'
     }
   ];
 
