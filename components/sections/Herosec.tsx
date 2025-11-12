@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
@@ -13,6 +14,25 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if the device is mobile
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Set initial value
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const menuItems = [
     { name: "Geography", href: "#geography" },
@@ -95,14 +115,32 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
         {/* Video Container */}
         <div className="relative w-full mx-auto">
           {/* Background Video */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="rounded-[12px] border-[12px] border-[var(--color-brown)]/50 object-cover w-full h-[750px] sm:h-[500px] lg:h-[580px] mx-auto"
-            src="https://res.cloudinary.com/dja1ghysx/video/upload/v1762159440/Hero_xm9rwg.mp4"
-          ></video>
+          <div className="relative w-full h-full">
+            {/* Fallback Image (always present but hidden when video is loaded) */}
+            <div className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`}>
+              <Image
+                src="https://res.cloudinary.com/dja1ghysx/image/upload/v1762964945/4_jxvmje.jpg"
+                alt="Karachi skyline"
+                fill
+                priority
+                sizes="100vw"
+                className="rounded-[12px] border-[12px] border-[var(--color-brown)]/50 object-cover"
+              />
+            </div>
+            
+            {/* Video Element */}
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              onLoadedData={() => setVideoLoaded(true)}
+              className={`rounded-[12px] border-[12px] border-[var(--color-brown)]/50 object-cover w-full h-[750px] sm:h-[500px] lg:h-[580px] mx-auto ${videoLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
+              src="https://res.cloudinary.com/dja1ghysx/video/upload/v1762159440/Hero_xm9rwg.mp4"
+            />
+          </div>
 
           {/* Dark overlay */}
           <div className="absolute top-0 left-0 w-full h-full bg-black/30  rounded-[12px]" />
@@ -110,17 +148,31 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
 
             {/* Text Content (Left aligned) */}
             <div className="absolute top-[14%] sm:top-[10%] md:top-[13%] left-6 md:left-10 lg:left-16 z-10 text-white max-w-[85%] md:max-w-[80%] text-left">
-              <h2 className="text-[2.1rem] lg:text-[56px] xl:text-[70px] font-bold uppercase tracking-wide drop-shadow-lg md:leading-[1.1] sm:leading-[1] ">
-                <TypingAnimation loop={false}>
+              {/* Mobile - Plain Text */}
+              <div className="md:hidden">
+                <h2 className="text-[2.1rem] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
                   The Karachi That Lives In Our Hearts :
-                </TypingAnimation>
-              </h2>
-
-              <div className="mt-2 sm:mt-3 md:mt-4 text-[22px] lg:text-[28px] w-[95%] sm:w-[90%] md:w-[85%] font-light leading-[1.2] drop-shadow-md">
-                <TextAnimate animation="slideUp" by="word" duration={1}>
-                  A journey through the city&apos;s origins, culture, and the grace
+                </h2>
+                <div className="mt-2 text-[22px] w-[95%] font-light leading-[1.2] drop-shadow-md">
+                  A journey through the city's origins, culture, and the grace
                   it once held.
-                </TextAnimate>
+                </div>
+              </div>
+
+              {/* Desktop - Animated Components */}
+              <div className="hidden md:block">
+                <h2 className="text-[2.1rem] lg:text-[56px] xl:text-[70px] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
+                  <TypingAnimation loop={false}>
+                    The Karachi That Lives In Our Hearts :
+                  </TypingAnimation>
+                </h2>
+
+                <div className="mt-3 md:mt-4 text-[22px] lg:text-[28px] w-[95%] sm:w-[90%] md:w-[85%] font-light leading-[1.2] drop-shadow-md">
+                  <TextAnimate animation="slideUp" by="word" duration={1}>
+                    A journey through the city&apos;s origins, culture, and the grace
+                    it once held.
+                  </TextAnimate>
+                </div>
               </div>
             </div>
 

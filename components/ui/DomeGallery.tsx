@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useCallback, useState } from 'react';
+import Image from 'next/image';
 import { useGesture } from '@use-gesture/react';
 
 type ImageItem = string | { src: string; alt?: string };
@@ -652,11 +653,16 @@ export default function DomeGallery({
     overlay.style.cssText = `position:absolute; left:${frameR.left - mainR.left}px; top:${frameR.top - mainR.top}px; width:${frameR.width}px; height:${frameR.height}px; opacity:0; z-index:30; will-change:transform,opacity; transform-origin:top left; transition:transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease; border-radius:${openedImageBorderRadius}; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.35);`;
     const rawSrc = parent.dataset.src || (el.querySelector('img') as HTMLImageElement)?.src || '';
     const rawAlt = parent.dataset.alt || (el.querySelector('img') as HTMLImageElement)?.alt || '';
+    const imgContainer = document.createElement('div');
+    imgContainer.style.cssText = 'width:100%; height:100%; position:relative;';
     const img = document.createElement('img');
     img.src = rawSrc;
     img.alt = rawAlt;
     img.style.cssText = `width:100%; height:100%; object-fit:cover; filter:${grayscale ? 'grayscale(1)' : 'none'};`;
-    overlay.appendChild(img);
+    img.loading = 'eager';
+    img.decoding = 'async';
+    imgContainer.appendChild(img);
+    overlay.appendChild(imgContainer);
     viewerRef.current!.appendChild(overlay);
     const tx0 = tileR.left - frameR.left;
     const ty0 = tileR.top - frameR.top;
@@ -882,16 +888,22 @@ export default function DomeGallery({
                       backfaceVisibility: 'hidden'
                     }}
                   >
-                    <img
-                      src={it.src}
-                      draggable={false}
-                      alt={it.alt}
-                      className="w-full h-full object-cover pointer-events-none"
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`
-                      }}
-                    />
+                    <div className="w-full h-full relative">
+                      <Image
+                        src={it.src}
+                        alt={it.alt || ''}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover pointer-events-none"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`
+                        }}
+                        priority={i < 4} // Load first 4 images with priority
+                        quality={85}
+                        loading={i < 4 ? 'eager' : 'lazy'}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}

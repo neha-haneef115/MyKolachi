@@ -106,8 +106,8 @@ body {
   color: var(--color-red);
   letter-spacing: 1px;
 }
+
 .button {
-  
   color: #fafafa;
   text-transform: uppercase;
 
@@ -115,16 +115,67 @@ body {
   border: 1px solid #fafafa;
   box-shadow: 3px 3px #fafafa;
   cursor: pointer;
-
 }
 
 .button:active {
   box-shadow: none;
-  transform: translate(3px, 3px);
+  transform: translateY(2px) translateZ(0);
+  transition: transform 0.1s ease-out;
 }
-html {
-  scroll-behavior: smooth;
+
+.animate-in {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+h1, h2, h3, h4, h5, h6 {
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.bg-cover {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.opacity-0 {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.opacity-100 {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.noisebg{
+   background-image: url('https://res.cloudinary.com/dja1ghysx/image/upload/v1762930664/noisy_iw4bfs.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.logo {
+  font-family: var(--font-alumni);
+ 
+  font-weight: 900;
+  color: var(--color-red);
+  letter-spacing: 1px;
+}
+
+body {
+  @apply bg-background text-foreground;
+  background-color: var(--color-bg);
+  font-family: var(--font-geist-sans) ;
+}
+
 .Globebody {
   @apply bg-[#0d0d0d] text-white overflow-hidden;
 }
@@ -154,3 +205,36 @@ canvas {
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
   background-repeat: repeat;
 }
+.wrapper {
+  height: 100vh;
+  /*This part is important for centering*/
+  display: grid;
+  place-items: center;
+}
+
+.typing-demo {
+  width: 22ch;
+  animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  font-family: monospace;
+  font-size: 2em;
+}
+
+@keyframes typing {
+  from {
+    width: 0
+  }
+}
+    
+@keyframes blink {
+  50% {
+    border-color: transparent
+  }
+}
+
+body {
+  text-align: center;
+}
+

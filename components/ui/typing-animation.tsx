@@ -1,9 +1,42 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
-import { motion, MotionProps, useInView } from "motion/react"
-
+import { useEffect, useMemo, useRef, useState, useCallback } from "react"
+import { motion, MotionProps, useInView } from "framer-motion"
 import { cn } from "@/lib/utils"
+
+// Throttle function to limit the rate of function execution
+const throttle = <F extends (...args: any[]) => any>(
+  func: F,
+  limit: number
+): ((...args: Parameters<F>) => void) => {
+  let inThrottle = false;
+  let lastArgs: Parameters<F> | null = null;
+  let lastThis: any;
+
+  const timeoutFunc = () => {
+    if (lastArgs === null) {
+      inThrottle = false;
+    } else {
+      func.apply(lastThis, lastArgs);
+      lastArgs = null;
+      lastThis = null;
+      setTimeout(timeoutFunc, limit);
+    }
+  };
+
+  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
+    lastArgs = args;
+    lastThis = this;
+    
+    if (!inThrottle) {
+      inThrottle = true;
+      func.apply(lastThis, lastArgs);
+      lastArgs = null;
+      lastThis = null;
+      setTimeout(timeoutFunc, limit);
+    }
+  };
+};
 
 interface TypingAnimationProps extends MotionProps {
   children?: string
@@ -39,17 +72,23 @@ export function TypingAnimation({
   cursorStyle = "line",
   ...props
 }: TypingAnimationProps) {
-  const MotionComponent = motion.create(Component, {
-    forwardMotionProps: true,
-  })
+  const MotionComponent = motion.create(Component)
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  
+  // Optimize for mobile by reducing animation speed and increasing delays
+  const mobileMultiplier = isMobile ? 1.5 : 1
+  const baseTypingSpeed = isMobile ? 150 : 100
+  const basePauseDelay = isMobile ? 1500 : 1000
 
   const [displayedText, setDisplayedText] = useState<string>("")
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [currentCharIndex, setCurrentCharIndex] = useState(0)
   const [phase, setPhase] = useState<"typing" | "pause" | "deleting">("typing")
-  const elementRef = useRef<HTMLElement | null>(null)
+  const elementRef = useRef<HTMLElement>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const currentCharIndexRef = useRef(0)
+  
   const isInView = useInView(elementRef as React.RefObject<Element>, {
-    amount: 0.3,
+    amount: 0.1, // Reduced from 0.3 for earlier trigger
     once: true,
   })
 
@@ -57,40 +96,60 @@ export function TypingAnimation({
     () => words || (children ? [children] : []),
     [words, children]
   )
+  
   const hasMultipleWords = wordsToAnimate.length > 1
-
-  const typingSpeed = typeSpeed || duration
+  const typingSpeed = typeSpeed || duration * mobileMultiplier
   const deletingSpeed = deleteSpeed || typingSpeed / 2
-
   const shouldStart = startOnView ? isInView : true
+
+  // Memoize the cursor character to prevent recalculation
+  const cursorChar = useMemo(() => {
+    switch (cursorStyle) {
+      case "block": return "▌"
+      case "underscore": return "_"
+      case "line":
+      default: return "|"
+    }
+  }, [cursorStyle])
+
+  // Throttled update function
+  const updateText = useCallback(
+    throttle((text: string) => {
+      setDisplayedText(text);
+    }, isMobile ? 32 : 16),
+    [isMobile]
+  )
 
   useEffect(() => {
     if (!shouldStart || wordsToAnimate.length === 0) return
 
-    const timeoutDelay =
-      delay > 0 && displayedText === ""
-        ? delay
-        : phase === "typing"
-          ? typingSpeed
-          : phase === "deleting"
-            ? deletingSpeed
-            : pauseDelay
+    const currentWord = wordsToAnimate[currentWordIndex] || ""
+    const graphemes = Array.from(currentWord)
+    const isLastWord = currentWordIndex === wordsToAnimate.length - 1
+    
+    let timeoutDelay = delay > 0 && displayedText === ""
+      ? delay
+      : phase === "typing"
+        ? typingSpeed
+        : phase === "deleting"
+          ? deletingSpeed
+          : pauseDelay
 
-    const timeout = setTimeout(() => {
-      const currentWord = wordsToAnimate[currentWordIndex] || ""
-      const graphemes = Array.from(currentWord)
+    // Slightly increase delay on mobile for better performance
+    if (isMobile) {
+      timeoutDelay = Math.min(timeoutDelay * 1.2, 200) // Cap at 200ms for mobile
+    }
 
+    timeoutRef.current = setTimeout(() => {
       switch (phase) {
         case "typing":
-          if (currentCharIndex < graphemes.length) {
-            setDisplayedText(graphemes.slice(0, currentCharIndex + 1).join(""))
-            setCurrentCharIndex(currentCharIndex + 1)
-          } else {
-            if (hasMultipleWords || loop) {
-              const isLastWord = currentWordIndex === wordsToAnimate.length - 1
-              if (!isLastWord || loop) {
-                setPhase("pause")
-              }
+          if (currentCharIndexRef.current < graphemes.length) {
+            const newText = graphemes.slice(0, currentCharIndexRef.current + 1).join("")
+            updateText(newText)
+            currentCharIndexRef.current++
+          } else if (hasMultipleWords || loop) {
+            if (!isLastWord || loop) {
+              setPhase("pause")
             }
           }
           break
@@ -100,9 +159,10 @@ export function TypingAnimation({
           break
 
         case "deleting":
-          if (currentCharIndex > 0) {
-            setDisplayedText(graphemes.slice(0, currentCharIndex - 1).join(""))
-            setCurrentCharIndex(currentCharIndex - 1)
+          if (currentCharIndexRef.current > 0) {
+            const newText = graphemes.slice(0, currentCharIndexRef.current - 1).join("")
+            updateText(newText)
+            currentCharIndexRef.current--
           } else {
             const nextIndex = (currentWordIndex + 1) % wordsToAnimate.length
             setCurrentWordIndex(nextIndex)
@@ -112,11 +172,14 @@ export function TypingAnimation({
       }
     }, timeoutDelay)
 
-    return () => clearTimeout(timeout)
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
   }, [
     shouldStart,
     phase,
-    currentCharIndex,
     currentWordIndex,
     displayedText,
     wordsToAnimate,
@@ -126,46 +189,50 @@ export function TypingAnimation({
     deletingSpeed,
     pauseDelay,
     delay,
+    updateText,
+    isMobile
   ])
 
-  const currentWordGraphemes = Array.from(
-    wordsToAnimate[currentWordIndex] || ""
-  )
-  const isComplete =
-    !loop &&
+  // Clean up timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
+  const currentWordGraphemes = Array.from(wordsToAnimate[currentWordIndex] || "")
+  const isComplete = !loop &&
     currentWordIndex === wordsToAnimate.length - 1 &&
-    currentCharIndex >= currentWordGraphemes.length &&
+    currentCharIndexRef.current >= currentWordGraphemes.length &&
     phase !== "deleting"
 
-  const shouldShowCursor =
-    showCursor &&
+  const shouldShowCursor = showCursor &&
     !isComplete &&
-    (hasMultipleWords || loop || currentCharIndex < currentWordGraphemes.length)
-
-  const getCursorChar = () => {
-    switch (cursorStyle) {
-      case "block":
-        return "▌"
-      case "underscore":
-        return "_"
-      case "line":
-      default:
-        return "|"
-    }
-  }
+    (hasMultipleWords || loop || currentCharIndexRef.current < currentWordGraphemes.length)
 
   return (
     <MotionComponent
       ref={elementRef}
-      className={cn(" tracking-[-0.02em]", className)}
+      className={cn("typing-animation tracking-[-0.02em] will-change-contents", className)}
+      style={{
+        // Optimize for performance
+        backfaceVisibility: 'hidden',
+        transform: 'translateZ(0)',
+        ...props.style
+      }}
       {...props}
     >
       {displayedText}
       {shouldShowCursor && (
         <span
-          className={cn("inline-block", blinkCursor && "animate-blink-cursor")}
+          className={cn("inline-block will-change-auto", blinkCursor && "animate-blink-cursor")}
+          style={{
+            animationDuration: '0.7s', // Slower blink on mobile
+          }}
         >
-          {getCursorChar()}
+          {cursorChar}
         </span>
       )}
     </MotionComponent>

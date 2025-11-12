@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Montserrat } from "next/font/google";
+import { Geist, Montserrat, Alumni_Sans_SC } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
   display: "swap",
-  preload: true,
-  adjustFontFallback: true,
-  fallback: ['system-ui', 'sans-serif']
 });
 
-
+const alumni = Alumni_Sans_SC({
+  subsets: ["latin"],
+  weight: "900",
+  variable: "--font-alumni",
+  display: "swap",
+  preload: true,
+  adjustFontFallback: true,
+});
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -33,7 +37,7 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${geistSans.variable}  ${montserrat.variable}`}
+      className={`${geistSans.variable}  ${alumni.variable} ${montserrat.variable}`}
     >
       <body className="font-sans antialiased">
         {children}
