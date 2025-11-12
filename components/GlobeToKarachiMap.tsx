@@ -56,7 +56,7 @@ const Map3D: React.FC<{ opacity: number; rotating: boolean }> = ({ opacity, rota
   const [geometry, setGeometry] = useState<THREE.BufferGeometry | null>(null);
 
   useEffect(() => {
-    fetch('/karachi-map.stl')
+    fetch('https://res.cloudinary.com/dja1ghysx/raw/upload/v1762930749/karachi-map_jfnreo.stl')
       .then(response => {
         if (!response.ok) throw new Error('STL file not found');
         return response.arrayBuffer();
@@ -259,8 +259,12 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           .ringRepeatPeriod('repeatPeriod');
 
         if (globeRef.current) {
-          globeRef.current.style.width = '100%';
-          globeRef.current.style.height = '100%';
+          // Set responsive size
+          const isMobile = window.innerWidth < 768; // Tailwind's md breakpoint
+          const size = isMobile ? '80%' : '100%';
+          globeRef.current.style.width = size;
+          globeRef.current.style.height = size;
+          globeRef.current.style.margin = '0 auto';
         }
 
         try {
@@ -555,7 +559,7 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wide hidden sm:block"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                fontFamily: 'Inter Tight, sans-serif'
+                fontFamily: ' Tight, sans-serif'
               }}
             >
               v2.4.1
@@ -574,7 +578,7 @@ function GlobeToKarachiMap() {
               className="text-xs font-light tracking-wide"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.5)',
-                fontFamily: 'Inter Tight, sans-serif'
+                
               }}
             >
               ACTIVE MODE
@@ -599,7 +603,7 @@ function GlobeToKarachiMap() {
                 className="text-xs font-light block"
                 style={{ 
                   color: 'rgba(242, 233, 226, 0.4)',
-                  fontFamily: 'Inter Tight, sans-serif'
+                  
                 }}
               >
                 RENDER
@@ -701,7 +705,7 @@ function GlobeToKarachiMap() {
                 className="text-[10px] sm:text-xs font-light tracking-wider uppercase flex items-center gap-2"
                 style={{ 
                   color: 'rgba(242, 233, 226, 0.5)',
-                  fontFamily: 'Inter Tight, sans-serif'
+                  
                 }}
               >
                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-3 sm:h-3">
@@ -734,8 +738,8 @@ function GlobeToKarachiMap() {
           }}
         >
           {phase === 'globe' && !hasAnimated ? (
-            <div className="w-full h-full flex items-center justify-center lg:justify-start px-2 sm:px-4 lg:px-0">
-              <div className="w-full h-full max-w-[500px] mx-auto lg:-translate-x-90">
+            <div className="w-full h-full flex items-center  justify-center lg:justify-start px-2 sm:px-4 lg:px-0">
+              <div className="w-full h-full max-w-[500px] mx-auto -mt-10 lg:-mt-25 lg:-translate-x-90">
                 <GlobeOverlay onZoomStart={handleZoomStart} visible={true} />
               </div>
             </div>
@@ -790,7 +794,7 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                fontFamily: 'Inter Tight, sans-serif'
+                
               }}
             >
               TARGET LOCATION
@@ -813,13 +817,13 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                fontFamily: 'Inter Tight, sans-serif'
+                
               }}
             >
               ELEVATION
             </span>
             <span 
-              className="text-xs sm:text-sm font-mono"
+              className="text-xs sm:text-sm font-light"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.7)',
                 fontFamily: 'Inter Tight, monospace'
@@ -856,13 +860,13 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                fontFamily: 'Inter Tight, sans-serif'
+                
               }}
             >
               RESOLUTION
             </span>
             <span 
-              className="text-xs sm:text-sm font-mono"
+              className="text-xs sm:text-sm font-light"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.7)',
                 fontFamily: 'Inter Tight, monospace'
@@ -879,13 +883,13 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                fontFamily: 'Inter Tight, sans-serif'
+                
               }}
             >
               TIMESTAMP
             </span>
             <span 
-              className="text-xs sm:text-sm font-mono whitespace-nowrap"
+              className="text-xs sm:text-sm font-light whitespace-nowrap"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.7)',
                 fontFamily: 'Inter Tight, monospace'

@@ -34,31 +34,31 @@ type ItemDef = {
 
 const DEFAULT_IMAGES: ImageItem[] = [
   {
-    src: 'https://images.unsplash.com/photo-1606511490662-b2c5be7d95a1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=825',
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929157/1_zs1qqq.avif',
     alt: 'Quaid Dome'
   },
   {
-    src: 'https://c2.staticflickr.com/8/7069/6956744835_aa7547d469_z.jpg',
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929159/2_nktgmd.jpg',
     alt: 'Habib bank'
   },
   {
-    src: 'https://images.unsplash.com/photo-1720347774718-91497c0727d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGthcmFjaGklMjBjaXR5fGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500',
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929159/3_zc08rf.avif',
     alt: 'Empress market'
   },
   {
-    src: 'https://images.unsplash.com/photo-1709326955894-ed49938291ed?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8a2FyYWNoaSUyMGNpdHl8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000',
-    alt: 'Quaid Dome'
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929162/4_jxvmje.jpg',
+    alt: 'Drone view'
   },
   {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Dolmen_Towers_Karachi.jpg/250px-Dolmen_Towers_Karachi.jpg',
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929161/5_xsao99.jpg',
     alt: 'Dolmen mall'
   },
   {
-    src: 'https://cdn.britannica.com/85/128585-050-5A1BDD02/Karachi-Pakistan.jpg',
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929161/6_jb5txq.webp',
     alt: 'Seaview'
   },
   {
-    src: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTUzX2ZdyzOhz0NS20u3aXq0TVhvY4DO4KxlCuI7mzIXeKIiAoj',
+    src: 'https://res.cloudinary.com/dja1ghysx/image/upload/v1762929162/7_nu2oq1.jpg',
     alt: 'Wall Art'
   }
 ];

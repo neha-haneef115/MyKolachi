@@ -14,49 +14,49 @@ const sections: Section[] = [
   {
     title: "Once Upon a Time",
     subtitle: "Green gardens swayed along the streets,\nHouses stood proud, calm, and sweet.",
-    image: "/images/1.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930272/1_u1fzm4.jpg",
     imageDescription: "1940s Karachi",
     reverse: false,
   },
   {
     title: "City by the Sea",
     subtitle: "Wide streets stretched under open skies,\nPalm trees and buildings stood wise.",
-    image: "/images/2.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930272/2_ilg1nb.jpg",
     imageDescription: "Victoria Road (Abdullah Haroon Rd), Saddar - 1950s",
     reverse: true,
   },
   {
     title: "City Streets",
     subtitle: "Wide roads lined with old buildings tall,\nCars and people moved along them all.",
-    image: "/images/3.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930273/3_ulfrre.jpg",
     imageDescription: "II Chundrigar Road - 1962",
     reverse: false,
   },
   {
     title: "Bustling Markets",
     subtitle: "Streets alive with people and cheer,\nGreen trees, bright shops, and vehicles near.",
-    image: "/images/4.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930274/4_vmc2vc.jpg",
     imageDescription: "Saddar area - 1965",
     reverse: true,
   },
   {
     title: "The Old Charm",
     subtitle: "Buildings stood proud, tall and bright,\nStreets whispered stories in morning light.",
-    image: "/images/5.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930307/6_rsgkew.jpg",
     imageDescription: "Mereweather Tower - 1970s",
     reverse: false,
   },
   {
     title: "Hearts That Stayed",
     subtitle: "Wide, clean roads and greenery all around,\nThe city stood peaceful, calm without a sound.",
-    image: "/images/6.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930307/6_rsgkew.jpg",
     imageDescription: "Teen Talwar - 1974",
     reverse: true,
   },
   {
     title: "A New Hope",
     subtitle: "Streets are crowded, noisy, and worn,\nTrash and chaos mark the city's morn.\n\nYet the sun rises, bringing a chance to mend,\nThe heart of Karachi will endure and transcend.",
-    image: "/images/7.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930350/7_yjfd24.jpg",
     imageDescription: "A visual story of Karachi today",
     reverse: false,
   },
@@ -356,7 +356,7 @@ export default function ThenVsNowStory() {
 
       <style jsx>{`
         .bg-noise {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
+          background-image: url("https://res.cloudinary.com/dja1ghysx/image/upload/v1762930695/download_nwqpj7.svg");
         }
       `}</style>
     </section>

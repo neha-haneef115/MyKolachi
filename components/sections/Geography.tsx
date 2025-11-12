@@ -19,7 +19,7 @@ export default function GeographySection() {
       },
       {
         threshold: 0.1, // Trigger when 10% of the section is visible
-        rootMargin: '0px 0px -50% 0px', // Trigger when the top of the section is in view
+        rootMargin: '0px 0px 0px 0px', // Trigger when the top of the section is in view
       }
     );
 

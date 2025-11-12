@@ -140,38 +140,38 @@ interface CultureItem {
 
 // Unique images for each section
 const foodImages = [
-  { id: 1, img: "https://i.pinimg.com/1200x/38/b5/7e/38b57e590aeb71f3478db74388f48c49.jpg" },
-  { id: 2, img: "https://cdn.shopify.com/s/files/1/0570/2113/6986/files/Shahi_Haleem_Tin_-_Chicken_Haleem_Chicken_Haleem_Can_-_Tin_Packed_-_Net_Weight_800_Grams_Canned_-_Ready_To_Eat_-_Tasty_Food.jpg?v=1661855762" },
-  { id: 3, img: "https://ticklethosetastebuds.com/wp-content/uploads/2021/07/1-724x1024.png" },
-  { id: 4, img: "https://i.pinimg.com/1200x/8c/4f/01/8c4f018f5be2e7fbfb7a71017244d9d6.jpg" }
+  { id: 1, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929812/1.1_iiboml.jpg" },
+  { id: 2, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929812/1.2_zgejka.webp" },
+  { id: 3, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929815/1.3_ztdbmq.png" },
+  { id: 4, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929813/1.4_autlhd.jpg" }
 ];
 
 const peopleImages = [
-  { id: 1, img: "https://i.pinimg.com/736x/2b/4f/a7/2b4fa79458a9b359937164adfd70ece8.jpg" },
-  { id: 2, img: "https://www.arabnews.com/sites/default/files/styles/n_670_395/public/2024/09/27/4528573-869018640.jpg?itok=v_Mt2aBn" },
-  { id: 3, img: "https://i.pinimg.com/originals/f3/01/89/f30189a08d3d6d76d0f6339ba3b26238.jpg" },
-  { id: 4, img: "https://i.pinimg.com/736x/d1/02/de/d102de8145cdd05f337ebaa40892f767.jpg" }
+  { id: 1, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929815/2.1_ikcsv5.jpg" },
+  { id: 2, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929816/2.2_nu5psg.jpg" },
+  { id: 3, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929817/2.3_bnfj99.jpg" },
+  { id: 4, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929820/2.4_hvghks.jpg" }
 ];
 
 const festivitiesImages = [
-  { id: 1, img: "https://i.pinimg.com/736x/1f/e8/14/1fe814d16bb4927a094d034a569f23ed.jpg" },
-  { id: 2, img: "https://www.arabnews.pk/sites/default/files/2023/03/08/3714926-1717315363.jpeg" },
-  { id: 3, img: "https://i.pinimg.com/1200x/8d/0e/8e/8d0e8e4f589f3613954a331b12d64fa4.jpg" },
-  { id: 4, img: "https://i.pinimg.com/736x/1c/59/e1/1c59e1b61ba0967a2b270438fbd7fafa.jpg" }
+  { id: 1, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929821/3.1_ravi2r.jpg" },
+  { id: 2, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929823/3.2_ipp7gw.jpg" },
+  { id: 3, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929823/3.3_fcqdv0.jpg" },
+  { id: 4, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929826/3.4_pdpfva.jpg" }
 ];
 
 const artImages = [
-  { id: 1, img: "https://i.pinimg.com/1200x/66/96/e8/6696e8d2d9cb1e274321b2eeefc20ecb.jpg" },
-  { id: 2, img: "https://tripjive.com/wp-content/uploads/2024/11/street-art-in-Karachis-neighborhoods-1024x585.jpg" },
-  { id: 3, img: "https://www.researchgate.net/publication/336105883/figure/fig4/AS:807794341060614@1569604587494/Truck-Art-Karachi-Pakistan.png" },
-  { id: 4, img: "https://i.dawn.com/primary/2023/09/650f687e556a6.jpg" }
+  { id: 1, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929828/4.1_vgvuoq.jpg" },
+  { id: 2, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929829/4.2_rqray4.jpg" },
+  { id: 3, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929831/4.3_zatgkt.png" },
+  { id: 4, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929833/4.4_adgxlt.jpg" }
 ];
 
 const musicImages = [
-  { id: 1, img: "https://aifd.edu.pk/wp-content/gallery/qawali-night-2024/qawali-night-24-large-12.jpg" },
-  { id: 2, img: "https://i.tribune.com.pk/media/images/19516-CONCERT_ANUSHAYFURQANx-1384942725/19516-CONCERT_ANUSHAYFURQANx-1384942725.jpg" },
-  { id: 3, img: "https://propakistani.pk/lens/wp-content/uploads/2025/05/danceday-13.jpg" },
-  { id: 4, img: "https://www.artscouncil.org.pk/wp-content/uploads/2019/12/Celebratiing-Historian-Dr.-Mubarak-Ali-at-Arts-Council-Karachi-1-1024x683.jpg" }
+  { id: 1, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929834/5.1_ejqjkg.jpg" },
+  { id: 2, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929836/5.2_u7dpyb.jpg" },
+  { id: 3, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929837/5.3_hplbxs.jpg" },
+  { id: 4, img: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762929840/5.4_kld5me.jpg" }
 ];
 
 const cultureData: CultureItem[] = [

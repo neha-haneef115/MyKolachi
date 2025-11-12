@@ -94,7 +94,7 @@ body {
   font-family: var(--font-geist-sans) ;
 }
 .noisebg{
-   background-image: url('/images/noisy.png');
+   background-image: url('https://res.cloudinary.com/dja1ghysx/image/upload/v1762930664/noisy_iw4bfs.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

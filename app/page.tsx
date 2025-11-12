@@ -13,8 +13,10 @@ export default function Home() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Initialize audio when component mounts
-    audioRef.current = new Audio('https://res.cloudinary.com/dja1ghysx/video/upload/v1762159836/Dohar_sdu0o1.mp3');
+    // Initialize audio when component mounts with preload
+    audioRef.current = new Audio();
+    audioRef.current.src = 'https://res.cloudinary.com/dja1ghysx/video/upload/v1762159836/Dohar_sdu0o1.mp3';
+    audioRef.current.preload = 'auto';
     audioRef.current.loop = true;
 
     // Cleanup on unmount
