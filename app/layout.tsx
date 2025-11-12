@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Inter_Tight, Montserrat } from "next/font/google";
+import { Geist, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'sans-serif']
 });
 
 
