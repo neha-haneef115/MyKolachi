@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Montserrat, Alumni_Sans_SC } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
+
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
@@ -37,10 +39,25 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${geistSans.variable}  ${alumni.variable} ${montserrat.variable}`}
+      className={`${geistSans.variable} ${alumni.variable} ${montserrat.variable}`}
     >
+      <head>
+        {/* Google Analytics gtag */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-PXVQPZXZZ3"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PXVQPZXZZ3');
+          `}
+        </Script>
+      </head>
       <body className="font-sans antialiased">
-       <Analytics />
+        <Analytics />
         {children}
       </body>
     </html>
