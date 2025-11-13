@@ -42,7 +42,7 @@ const sections: Section[] = [
   {
     title: "The Old Charm",
     subtitle: "Buildings stood proud, tall and bright,\nStreets whispered stories in morning light.",
-    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930307/6_rsgkew.jpg",
+    image: "https://res.cloudinary.com/dja1ghysx/image/upload/v1762930307/5_unmnzj.jpg",
     imageDescription: "Mereweather Tower - 1970s",
     reverse: false,
   },
