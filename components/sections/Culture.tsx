@@ -6,12 +6,12 @@ import CultureList from "../CultureList";
 
 const Culture = () => {
   return (
-    <>
+    <section id="culture">
       <div className="relative w-full ">
         <Dome />
       </div>
       <CultureList />
-    </>
+    </section>
   );
 };
 

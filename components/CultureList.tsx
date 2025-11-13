@@ -285,7 +285,7 @@ const AnimatedCounter = ({ value, label }: { value: string; label: string }) => 
     : count.toString();
 
   return (
-    <div ref={ref} className="stat-item bg-[#F2E9E2] rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+    <div ref={ref} className="stat-item bg-[#F2E9E2] rounded-2xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       <div className="text-2xl sm:text-3xl font-bold text-[#c1553d] font-serif" style={{ fontFamily: 'Montserrat, serif' }}>
         {isVisible ? displayValue : '0'}
       </div>
@@ -492,57 +492,97 @@ export default function CultureSection() {
         />
 
          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Large circle top right */}
-        <div 
-          className="absolute rounded-full "
-          style={{
-            width: '600px',
-            height: '600px',
-            backgroundColor: 'var(--color-red)',
-            top: '-250px',
-            right: '-400px',
-          }}
-        />
-        
-        {/* Medium circle bottom left */}
-        <div 
-          className="absolute rounded-full "
-          style={{
-            width: '600px',
-            height: '600px',
-            backgroundColor: 'var(--color-red)',
-            bottom: '-400px',
-            left: '-350px',
-          }}
-        />
-        
-        {/* Circle on left side */}
-        <div 
-          className="absolute rounded-full "
-          style={{
-            width: '400px',
-            height: '400px',
-            backgroundColor: 'var(--color-red)',
-            top: '30%',
-            left: '-250px',
-          }}
-        />
+  {/* Large circle top right */}
+  <div
+    className="absolute rounded-full"
+    style={{
+      width: '600px',
+      height: '600px',
+      backgroundColor: 'var(--color-red)',
+      top: '-250px',
+      right: '-400px',
+    }}
+  >
+    <style jsx>{`
+      @media (max-width: 768px) {
+        div {
+          width: 300px !important;
+          height: 300px !important;
+          top: -125px !important;
+          right: -200px !important;
+        }
+      }
+    `}</style>
+  </div>
 
-        {/* Circle on right side */}
-        <div 
-          className="absolute rounded-full"
-          style={{
-            width: '350px',
-            height: '350px',
-            backgroundColor: 'var(--color-red)',
-            bottom: '20%',
-            right: '-250px',
-          }}
-        />
-        
-        {/* Center accent */}
-        
-      </div>
+  {/* Medium circle bottom left */}
+  <div
+    className="absolute rounded-full"
+    style={{
+      width: '600px',
+      height: '600px',
+      backgroundColor: 'var(--color-red)',
+      bottom: '-400px',
+      left: '-350px',
+    }}
+  >
+    <style jsx>{`
+      @media (max-width: 768px) {
+        div {
+          width: 300px !important;
+          height: 300px !important;
+          bottom: -200px !important;
+          left: -175px !important;
+        }
+      }
+    `}</style>
+  </div>
+
+  {/* Circle on left side */}
+  <div
+    className="absolute rounded-full"
+    style={{
+      width: '400px',
+      height: '400px',
+      backgroundColor: 'var(--color-red)',
+      top: '30%',
+      left: '-250px',
+    }}
+  >
+    <style jsx>{`
+      @media (max-width: 768px) {
+        div {
+          width: 200px !important;
+          height: 200px !important;
+          left: -125px !important;
+        }
+      }
+    `}</style>
+  </div>
+
+  {/* Circle on right side */}
+  <div
+    className="absolute rounded-full"
+    style={{
+      width: '350px',
+      height: '350px',
+      backgroundColor: 'var(--color-red)',
+      bottom: '20%',
+      right: '-250px',
+    }}
+  >
+    <style jsx>{`
+      @media (max-width: 768px) {
+        div {
+          width: 175px !important;
+          height: 175px !important;
+          right: -125px !important;
+        }
+      }
+    `}</style>
+  </div>
+</div>
+
       </div>
 
       {/* Content Container */}
@@ -550,7 +590,7 @@ export default function CultureSection() {
         <div className="flex flex-col gap-16 sm:gap-20 md:gap-22">
           {cultureData.map((item, index) => {
             const cardWidth = isMobile ? 280 : 420;
-            const cardHeight = isMobile ? 320 : 480;
+            const cardHeight = isMobile ? 290 : 400;
 
             return (
               <div

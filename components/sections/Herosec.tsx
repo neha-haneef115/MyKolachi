@@ -1,10 +1,7 @@
 "use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { TypingAnimation } from "@/components/ui/typing-animation";
-import { TextAnimate } from "@/components/ui/text-animate";
-import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
-import { HiChevronDoubleDown } from "react-icons/hi";
 import { Menu, X } from "lucide-react";
 
 interface HeroProps {
@@ -13,24 +10,22 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check if the device is mobile
-    const checkIfMobile = () => {
+    setMounted(true);
+    
+    const checkIfMobile = (): void => {
       setIsMobile(window.innerWidth < 768);
     };
     
-    // Set initial value
     checkIfMobile();
-    
-    // Add event listener for window resize
     window.addEventListener('resize', checkIfMobile);
     
-    // Cleanup
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
@@ -40,10 +35,21 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
     { name: "Culture", href: "#culture" },
     { name: "Then vs Now", href: "#then-now" },
     { name: "Tribute", href: "#tribute" },
-  ];
+  ] as const;
+
+  const handleScrollToSection = (id: string): void => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <section id="home" className="noisebg "> 
+    <section id="home" className="noisebg"> 
       <header className="flex flex-col h-auto">
         {/* Navbar */}
         <nav className="flex items-center pt-4 sm:pt-6 justify-between px-4 sm:px-8">
@@ -76,8 +82,17 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
               onClick={onToggleAudio}
               className="text-[var(--color-red)] text-xl sm:text-2xl cursor-pointer p-2 rounded-full hover:bg-gray-100/10 transition-colors"
               aria-label={isPlaying ? "Mute audio" : "Unmute audio"}
+              type="button"
             >
-              {isPlaying ? <FaVolumeUp /> : <FaVolumeMute />}
+              {isPlaying ? (
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                </svg>
+              )}
             </button>
 
             {/* Hamburger Menu Button */}
@@ -85,6 +100,7 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden text-[var(--color-red)] text-2xl p-2 rounded-full hover:bg-gray-100/10 transition-colors"
               aria-label="Toggle menu"
+              type="button"
             >
               {isMenuOpen ? <X /> : <Menu />}
             </button>
@@ -110,75 +126,87 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
           </div>
         )}
 
-         {/* Hero Section */}
-      <div className="relative flex items-center justify-center px-4 md:px-10 py-5">
-        {/* Video Container */}
-        <div className="relative w-full mx-auto">
-          {/* Background Video */}
-          <div className="relative w-full h-full">
-            {/* Fallback Image (always present but hidden when video is loaded) */}
-            <div className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`}>
+        {/* Hero Section - Fixed height to prevent layout shifts */}
+        <div className="relative w-full h-[800px] sm:h-[550px] lg:h-[630px] flex items-center justify-center">
+          {/* Media Container */}
+          <div className="absolute inset-4 sm:inset-7">
+            {/* Static Image - Priority loading with Next.js Image */}
+            <div 
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ${
+                !isMobile && videoLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              } z-10`}
+            >
               <Image
                 src="https://res.cloudinary.com/dja1ghysx/image/upload/v1762964945/4_jxvmje.jpg"
                 alt="Karachi skyline"
                 fill
                 priority
-                sizes="100vw"
+                quality={90}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 90vw"
                 className="rounded-[12px] border-[12px] border-[var(--color-brown)]/50 object-cover"
               />
             </div>
             
-            {/* Video Element */}
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              onLoadedData={() => setVideoLoaded(true)}
-              className={`rounded-[12px] border-[12px] border-[var(--color-brown)]/50 object-cover w-full h-[750px] sm:h-[500px] lg:h-[580px] mx-auto ${videoLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
-              src="https://res.cloudinary.com/dja1ghysx/video/upload/v1762159440/Hero_xm9rwg.mp4"
-            />
-          </div>
-
-          {/* Dark overlay */}
-          <div className="absolute top-0 left-0 w-full h-full bg-black/30  rounded-[12px]" />
-
-
-            {/* Text Content (Left aligned) */}
-            <div className="absolute top-[14%] sm:top-[10%] md:top-[13%] left-6 md:left-10 lg:left-16 z-10 text-white max-w-[85%] md:max-w-[80%] text-left">
-              {/* Mobile - Plain Text */}
-              <div className="md:hidden">
-                <h2 className="text-[2.1rem] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
-                  The Karachi That Lives In Our Hearts :
-                </h2>
-                <div className="mt-2 text-[22px] w-[95%] font-light leading-[1.2] drop-shadow-md">
-                  A journey through the city's origins, culture, and the grace
-                  it once held.
-                </div>
+            {/* Video Element - Desktop only, loads after image */}
+            {!isMobile && (
+              <div className="absolute inset-0 w-full h-full z-0">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  onLoadedData={() => {
+                    setVideoLoaded(true);
+                  }}
+                  onError={(e) => {
+                    console.error('Video loading error:', e);
+                  }}
+                  className="w-full h-full rounded-[12px] border-[12px] border-[var(--color-brown)]/50 object-cover"
+                >
+                  <source 
+                    src="https://res.cloudinary.com/dja1ghysx/video/upload/v1762159440/Hero_xm9rwg.mp4" 
+                    type="video/mp4" 
+                  />
+                  Your browser does not support the video tag.
+                </video>
               </div>
-
-              {/* Desktop - Animated Components */}
-              <div className="hidden md:block">
-                <h2 className="text-[2.1rem] lg:text-[56px] xl:text-[70px] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
-                  <TypingAnimation loop={false}>
+            )}
+            
+            {/* Dark overlay */}
+            <div className="absolute inset-0 w-full h-full bg-black/30 rounded-[12px] z-20" />
+            
+            {/* Content wrapper */}
+            <div className="relative w-full max-w-[1800px] mx-auto h-full z-30">
+              {/* Text Content */}
+              <div className="absolute top-[14%] sm:top-[10%] md:top-[13%] left-6 md:left-10 lg:left-16 text-white max-w-[85%] md:max-w-[80%] text-left">
+                {/* Mobile - Static Text */}
+                <div className="md:hidden">
+                  <h2 className="text-[2.1rem] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
                     The Karachi That Lives In Our Hearts :
-                  </TypingAnimation>
-                </h2>
-
-                <div className="mt-3 md:mt-4 text-[22px] lg:text-[28px] w-[95%] sm:w-[90%] md:w-[85%] font-light leading-[1.2] drop-shadow-md">
-                  <TextAnimate animation="slideUp" by="word" duration={1}>
+                  </h2>
+                  <p className="mt-2 text-[22px] w-[95%] font-light leading-[1.2] drop-shadow-md">
                     A journey through the city&apos;s origins, culture, and the grace
                     it once held.
-                  </TextAnimate>
+                  </p>
+                </div>
+
+                {/* Desktop - Animated Text */}
+                <div className="hidden md:block">
+                  <h2 className="text-[2.1rem] lg:text-[56px] xl:text-[70px] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
+                    The Karachi That Lives In Our Hearts :
+                  </h2>
+                  <p className="mt-3 md:mt-4 text-[22px] lg:text-[28px] w-[95%] sm:w-[90%] md:w-[85%] font-light leading-[1.2] drop-shadow-md">
+                    A journey through the city&apos;s origins, culture, and the grace
+                    it once held.
+                  </p>
                 </div>
               </div>
-            </div>
 
-            {/* Button (Horizontally centered, vertically ~70%) */}
-            <div className="absolute left-1/2 top-[65%] sm:top-[68%] transform -translate-x-1/2 z-10 flex flex-col items-center gap-2 sm:gap-4">
-              <button
+              {/* CTA Button */}
+              <div className="absolute left-1/2 top-[65%] sm:top-[68%] transform -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-4">
+               <button
                 onClick={() => {
                   document.getElementById("geography")?.scrollIntoView({ behavior: "smooth" });
                 }}
@@ -186,7 +214,16 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
               >
                 Explore Karachi
               </button>
-              <HiChevronDoubleDown className="text-3xl text-white animate-bounce mt-2" />
+                <svg 
+                  className="w-8 h-8 text-white animate-bounce mt-2" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>

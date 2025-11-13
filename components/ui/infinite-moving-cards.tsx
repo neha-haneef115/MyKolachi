@@ -31,9 +31,38 @@ export const InfiniteMovingCards = ({
   const [dragStartX, setDragStartX] = useState(0);
   const [scrollLeftStart, setScrollLeftStart] = useState(0);
   const [isShiftPressed, setIsShiftPressed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   useEffect(() => {
     addAnimation();
+
+    const handleTouchStart = () => {
+      if (isMobile) {
+        setIsTouching(true);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (isMobile) {
+        // Small delay before re-enabling auto-scroll to prevent jank
+        const timer = setTimeout(() => {
+          setIsTouching(false);
+        }, 300);
+        return () => clearTimeout(timer);
+      }
+    };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Shift') {
@@ -62,14 +91,22 @@ export const InfiniteMovingCards = ({
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
+    // Add touch event listeners for mobile
+    if (scroller) {
+      scroller.addEventListener('touchstart', handleTouchStart, { passive: true });
+      scroller.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
+
     return () => {
       if (scroller) {
         scroller.removeEventListener('wheel', handleWheel);
+        scroller.removeEventListener('touchstart', handleTouchStart);
+        scroller.removeEventListener('touchend', handleTouchEnd);
       }
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [isShiftPressed]);
+  }, [isShiftPressed, isMobile]);
   function addAnimation() {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -116,7 +153,7 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 max-w-7xl overflow-hidden select-none",
+        "scroller relative z-20 w-full overflow-hidden select-none",
         className,
       )}
     >
@@ -129,6 +166,9 @@ export const InfiniteMovingCards = ({
         onDragStart={(e, info) => {
           setIsDragging(true);
           setHoveredCard(null);
+          if (isMobile) {
+            setIsTouching(true);
+          }
           setDragStartX(info.point.x);
           if (scrollerRef.current) {
             setScrollLeftStart(scrollerRef.current.scrollLeft);
@@ -136,11 +176,17 @@ export const InfiniteMovingCards = ({
         }}
         onDragEnd={() => {
           setIsDragging(false);
+          if (isMobile) {
+            const timer = setTimeout(() => {
+              setIsTouching(false);
+            }, 300);
+            return () => clearTimeout(timer);
+          }
         }}
         className={cn(
           "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4 cursor-grab active:cursor-grabbing",
-          start && !isDragging && "animate-scroll",
-          pauseOnHover && "hover:[animation-play-state:paused]",
+          start && !isDragging && !isTouching && "animate-scroll",
+          (pauseOnHover || isTouching) && "hover:[animation-play-state:paused]",
           isShiftPressed && "cursor-ew-resize"
         )}
         style={{

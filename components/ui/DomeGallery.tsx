@@ -184,10 +184,18 @@ export default function DomeGallery({
   const openingRef = useRef(false);
   const openStartedAtRef = useRef(0);
   const lastDragEndAt = useRef(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const scrollY = useRef(0);
-  const targetRotationY = useRef(0);
-  const isAutoRotating = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const scrollLockedRef = useRef(false);
   const lockScroll = useCallback(() => {
@@ -213,18 +221,23 @@ export default function DomeGallery({
 
   const lockedRadiusRef = useRef<number | null>(null);
 
-  // Handle scroll-based rotation
+  // Handle scroll-based rotation (desktop only)
   useEffect(() => {
-    if (openingRef.current || draggingRef.current) return;
+    if (isMobile) {
+      // Reset rotation on mobile
+      rotationRef.current = { x: 0, y: 0 };
+      applyTransform(0, 0);
+      return;
+    }
 
     const handleScroll = () => {
-      if (openingRef.current || draggingRef.current) return;
+      if (openingRef.current || draggingRef.current || isMobile) return;
       
       const scrollY = window.scrollY;
       // Reduced sensitivity for smoother, slower rotation
       const newRotationY = scrollY * 0.05;
       
-      // Update rotation directly based on scroll position
+      // Update rotation directly based on scroll position (desktop only)
       rotationRef.current.y = newRotationY;
       applyTransform(rotationRef.current.x, rotationRef.current.y);
     };
@@ -242,7 +255,7 @@ export default function DomeGallery({
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('scroll', scrollHandler);
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -782,16 +795,6 @@ export default function DomeGallery({
       }
     }
     
-    // body.dg-scroll-lock {
-    //   position: fixed !important;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100% !important;
-    //   height: 100% !important;
-    //   overflow: hidden !important;
-    //   touch-action: none !important;
-    //   overscroll-behavior: contain !important;
-    // }
     .item__image {
       position: absolute;
       inset: 10px;
@@ -899,7 +902,7 @@ export default function DomeGallery({
                           backfaceVisibility: 'hidden',
                           filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`
                         }}
-                        priority={i < 4} // Load first 4 images with priority
+                        priority={i < 4}
                         quality={85}
                         loading={i < 4 ? 'eager' : 'lazy'}
                       />

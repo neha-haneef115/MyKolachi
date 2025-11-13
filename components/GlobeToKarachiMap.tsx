@@ -49,6 +49,26 @@ function parseSTLBinary(buffer: ArrayBuffer): THREE.BufferGeometry | null {
   }
 }
 
+// ==================== RESPONSIVE UTILITIES ====================
+function useResponsive() {
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowSize({ width, height: window.innerHeight });
+      setIsLargeScreen(width >= 1024);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return { windowSize, isLargeScreen };
+}
+
 // ==================== 3D KARACHI MAP (STL) ====================
 const Map3D: React.FC<{ opacity: number; rotating: boolean }> = ({ opacity, rotating }) => {
   const mapRef = useRef<THREE.Mesh>(null);
@@ -171,7 +191,7 @@ const ThreeScene: React.FC<{ phase: AnimationPhase }> = ({ phase }) => {
 };
 
 // ==================== GLOBE.GL COMPONENT ====================
-const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({ onZoomStart, visible }) => {
+const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean; isLargeScreen: boolean }> = ({ onZoomStart, visible, isLargeScreen }) => {
   const globeRef = useRef<HTMLDivElement | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
@@ -187,8 +207,13 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
         const GlobeModule = (await import('globe.gl')).default;
         const Globe = GlobeModule;
 
+        // Reduced quality for mobile
+        const globeImageUrl = isLargeScreen 
+          ? 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
+          : 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg';
+
         globeInstance = new Globe(globeRef.current!)
-          .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+          .globeImageUrl(globeImageUrl)
           .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
           .backgroundColor('rgba(0,0,0,0)')
           .showAtmosphere(true)
@@ -201,7 +226,7 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           lng: 67.0011,
           name: 'Karachi',
           color: '#D94A2E',
-          size: 1.8,
+          size: isLargeScreen ? 1.8 : 1.5,
         };
 
         globeInstance
@@ -218,11 +243,11 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           .labelLat('lat')
           .labelLng('lng')
           .labelText('name')
-          .labelSize(1.8)
+          .labelSize(isLargeScreen ? 1.8 : 1.3)
           .labelColor(() => '#F2E9E2')
           .labelAltitude(0.08)
           .labelDotRadius(0.5)
-          .labelResolution(2);
+          .labelResolution(isLargeScreen ? 2 : 1);
 
         globeInstance
           .arcsData([
@@ -236,13 +261,13 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           ])
           .arcColor('color')
           .arcAltitude(0.6)
-          .arcStroke(2)
+          .arcStroke(isLargeScreen ? 2 : 1.5)
           .arcDashLength(0.4)
           .arcDashGap(0.01)
           .arcDashAnimateTime(6000)
           .arcDashInitialGap(() => Math.random());
 
-        const rings = Array.from({ length: 3 }, (_, i) => ({
+        const rings = Array.from({ length: isLargeScreen ? 3 : 2 }, (_, i) => ({
           lat: karachi.lat,
           lng: karachi.lng,
           maxR: 3 + i * 2,
@@ -259,12 +284,10 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
           .ringRepeatPeriod('repeatPeriod');
 
         if (globeRef.current) {
-          // Set responsive size
-          const isMobile = window.innerWidth < 768; // Tailwind's md breakpoint
-          const size = isMobile ? '80%' : '100%';
-          globeRef.current.style.width = size;
-          globeRef.current.style.height = size;
-          globeRef.current.style.margin = '0 auto';
+          const rect = globeRef.current.getBoundingClientRect();
+          const size = Math.min(rect.width, rect.height);
+          globeRef.current.style.width = size + 'px';
+          globeRef.current.style.height = size + 'px';
         }
 
         try {
@@ -336,7 +359,7 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
     return () => {
       cleanupFn?.();
     };
-  }, [visible, onZoomStart, isTransitioning]);
+  }, [visible, onZoomStart, isTransitioning, isLargeScreen]);
 
   if (!visible) return null;
 
@@ -344,8 +367,12 @@ const GlobeOverlay: React.FC<{ onZoomStart: () => void; visible: boolean }> = ({
     <div 
       ref={globeRef} 
       style={{ 
-        width: '100%', 
-        height: '100%',
+        width: isLargeScreen ? '100%' : '60vw',
+        maxWidth: isLargeScreen ? '500px' : '100%',
+        height: isLargeScreen ? '100%' : '60vw',
+        maxHeight: '500px',
+        aspectRatio: '1',
+        margin: '0 auto',
         pointerEvents: 'auto',
       }} 
     />
@@ -476,6 +503,7 @@ function GlobeToKarachiMap() {
   const [phase, setPhase] = useState<AnimationPhase>('globe');
   const [loaded, setLoaded] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const { windowSize, isLargeScreen } = useResponsive();
 
   useEffect(() => {
     setPhase('globe');
@@ -578,7 +606,6 @@ function GlobeToKarachiMap() {
               className="text-xs font-light tracking-wide"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.5)',
-                
               }}
             >
               ACTIVE MODE
@@ -603,7 +630,6 @@ function GlobeToKarachiMap() {
                 className="text-xs font-light block"
                 style={{ 
                   color: 'rgba(242, 233, 226, 0.4)',
-                  
                 }}
               >
                 RENDER
@@ -635,7 +661,7 @@ function GlobeToKarachiMap() {
       </div>
 
       {/* Main Content Container */}
-      <div className="flex-1 flex p-4 flex-col lg:flex-row pt-12 sm:pt-14 lg:pt-0 relative overflow-y-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      <div className="flex-1 flex p-4 flex-col lg:flex-row pt-12 sm:pt-14 lg:pt-0 relative overflow-hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         
         {/* Left Panel - Text Content */}
         <div 
@@ -644,8 +670,8 @@ function GlobeToKarachiMap() {
             opacity: loaded ? 1 : 0,
             transform: loaded ? 'translateX(0)' : 'translateX(-20px)',
             transition: 'opacity 1.2s ease-out, transform 1.2s ease-out',
-            minHeight: '40vh',
-            height: 'auto',
+            minHeight: isLargeScreen ? 'auto' : '40vh',
+            height: isLargeScreen ? 'auto' : 'auto',
             maxHeight: '100%',
             overflow: 'visible'
           }}
@@ -705,7 +731,6 @@ function GlobeToKarachiMap() {
                 className="text-[10px] sm:text-xs font-light tracking-wider uppercase flex items-center gap-2"
                 style={{ 
                   color: 'rgba(242, 233, 226, 0.5)',
-                  
                 }}
               >
                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="sm:w-3 sm:h-3">
@@ -730,18 +755,17 @@ function GlobeToKarachiMap() {
 
         {/* Right Panel - 3D Visualization */}
         <div 
-          className="w-full lg:w-1/2 flex items-center justify-center relative h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[calc(100vh-8rem)]"
+          className="w-full lg:w-1/2 flex items-center justify-center relative"
           style={{
+            height: isLargeScreen ? '100%' : '50vh',
             opacity: loaded ? 1 : 0,
             transform: loaded ? 'translateX(0)' : 'translateX(-20px)',
             transition: 'opacity 1.2s ease-out 0.2s, transform 1.2s ease-out 0.2s'
           }}
         >
           {phase === 'globe' && !hasAnimated ? (
-            <div className="w-full h-full flex items-center  justify-center lg:justify-start px-2 sm:px-4 lg:px-0">
-              <div className="w-full h-full max-w-[500px] mx-auto -mt-10 lg:-mt-25 lg:-translate-x-90">
-                <GlobeOverlay onZoomStart={handleZoomStart} visible={true} />
-              </div>
+            <div className="w-full h-full flex items-center justify-center p-4 -mt-80 lg:-mt-25 2xl:-mt-50 -translate-x-22 lg:-translate-x-90">
+              <GlobeOverlay onZoomStart={handleZoomStart} visible={true} isLargeScreen={isLargeScreen} />
             </div>
           ) : (
             <div style={{ 
@@ -758,7 +782,7 @@ function GlobeToKarachiMap() {
                 camera={{ 
                   position: [0, 1, 8], 
                   fov: 55,
-                  aspect: typeof window !== 'undefined' ? window.innerWidth < 1024 ? 1.5 : 1 : 1
+                  aspect: isLargeScreen ? 1 : 1.5
                 }} 
                 gl={{ antialias: true, alpha: true }}
                 style={{
@@ -794,7 +818,6 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                
               }}
             >
               TARGET LOCATION
@@ -817,7 +840,6 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                
               }}
             >
               ELEVATION
@@ -860,7 +882,6 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                
               }}
             >
               RESOLUTION
@@ -883,7 +904,6 @@ function GlobeToKarachiMap() {
               className="text-[9px] sm:text-xs font-light tracking-wider uppercase truncate"
               style={{ 
                 color: 'rgba(242, 233, 226, 0.4)',
-                
               }}
             >
               TIMESTAMP
