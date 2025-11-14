@@ -11,12 +11,14 @@ export const InfiniteMovingCards = ({
   speed = "fast",
   pauseOnHover = true,
   className,
+  onItemClick,
 }: {
   items: {
     quote: string;
     name: string;
     title: string;
   }[];
+  onItemClick?: (item: { quote: string; name: string; title: string }) => void;
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
@@ -197,10 +199,12 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <motion.li
-            className="w-[380px] h-[305px] flex-shrink-0 rounded-2xl p-8 shadow-2xl border border-white/15 backdrop-blur-md bg-white/10 flex flex-col"
+            className="w-[380px] h-[305px] flex-shrink-0 rounded-2xl p-8 shadow-2xl border border-white/15 backdrop-blur-md bg-white/10 flex flex-col cursor-pointer"
             key={item.name}
             onHoverStart={() => !isDragging && setHoveredCard(item.name)}
             onHoverEnd={() => setHoveredCard(null)}
+            onClick={() => onItemClick && onItemClick(item)}
+            whileTap={{ scale: 0.98 }}
             animate={{
               y: hoveredCard === item.name && !isDragging ? -3 : 0,
               boxShadow: hoveredCard === item.name && !isDragging 
