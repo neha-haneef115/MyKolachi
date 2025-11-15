@@ -69,14 +69,11 @@ interface TextAnimateProps extends MotionProps {
   accessible?: boolean
 }
 
-// Faster stagger timings for mobile
-const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-
 const staggerTimings: Record<AnimationType, number> = {
-  text: isMobile ? 0.03 : 0.06,
-  word: isMobile ? 0.02 : 0.05,
-  character: isMobile ? 0.01 : 0.03,
-  line: isMobile ? 0.03 : 0.06,
+  text: 0.06,
+  word: 0.05,
+  character: 0.03,
+  line: 0.06,
 }
 
 const defaultContainerVariants = {
@@ -98,14 +95,12 @@ const defaultContainerVariants = {
 }
 
 const defaultItemVariants: Variants = {
-  hidden: { opacity: 0, willChange: 'opacity, transform' },
+  hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    willChange: 'opacity, transform',
   },
   exit: {
     opacity: 0,
-    willChange: 'opacity, transform',
   },
 }
 
@@ -116,22 +111,18 @@ const defaultItemAnimationVariants: Record<
   fadeIn: {
     container: defaultContainerVariants,
     item: {
-      hidden: { opacity: 0, y: isMobile ? 5 : 20 },
+      hidden: { opacity: 0, y: 20 },
       show: {
         opacity: 1,
         y: 0,
         transition: {
-          duration: isMobile ? 0.2 : 0.3,
-          ease: 'easeOut',
+          duration: 0.3,
         },
       },
       exit: {
         opacity: 0,
-        y: isMobile ? 5 : 20,
-        transition: { 
-          duration: isMobile ? 0.15 : 0.25,
-          ease: 'easeIn'
-        },
+        y: 20,
+        transition: { duration: 0.3 },
       },
     },
   },
@@ -320,9 +311,9 @@ const TextAnimateBase = ({
   segmentClassName,
   as: Component = "p",
   startOnView = true,
-  once = true, // Default to true for better mobile performance
-  by = isMobile ? 'word' : 'character', // Use word animation on mobile for better performance
-  animation = isMobile ? 'fadeIn' : 'fadeIn', // Use simpler animations on mobile
+  once = false,
+  by = "word",
+  animation = "fadeIn",
   accessible = true,
   ...props
 }: TextAnimateProps) => {
@@ -390,11 +381,8 @@ const TextAnimateBase = ({
         }
       : { container: defaultContainerVariants, item: defaultItemVariants }
 
-  // Use simpler animation mode on mobile
-  const motionMode = isMobile ? 'wait' : 'popLayout';
-  
   return (
-    <AnimatePresence mode={motionMode}>
+    <AnimatePresence mode="popLayout">
       <MotionComponent
         variants={finalVariants.container as Variants}
         initial="hidden"

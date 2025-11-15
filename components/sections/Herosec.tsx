@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-
+import { TextAnimate } from "../ui/text-animate";
+import { TypingAnimation } from "../ui/typing-animation";
 interface HeroProps {
   isPlaying: boolean;
   onToggleAudio: () => void;
@@ -180,28 +181,24 @@ const Hero: React.FC<HeroProps> = ({ isPlaying, onToggleAudio }) => {
             {/* Content wrapper */}
             <div className="relative w-full max-w-[1800px] mx-auto h-full z-30">
               {/* Text Content */}
-              <div className="absolute top-[14%] sm:top-[10%] md:top-[13%] left-6 md:left-10 lg:left-16 text-white max-w-[85%] md:max-w-[80%] text-left">
-                {/* Mobile - Static Text */}
-                <div className="md:hidden">
-                  <h2 className="text-[2.1rem] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
-                    The Karachi That Lives In Our Hearts :
-                  </h2>
-                  <p className="mt-2 text-[22px] w-[95%] font-light leading-[1.2] drop-shadow-md">
-                    A journey through the city&apos;s origins, culture, and the grace
-                    it once held.
-                  </p>
-                </div>
-
+              <div className="absolute top-[14%] sm:top-[10%] md:top-[13%] left-6 md:left-10 lg:left-16 z-10 text-white max-w-[85%] md:max-w-[80%] text-left">
+                {/* Mobile - Static Text (no animation) */}
+                
                 {/* Desktop - Animated Text */}
-                <div className="hidden md:block">
+               
                   <h2 className="text-[2.1rem] lg:text-[56px] xl:text-[70px] font-bold uppercase tracking-wide drop-shadow-lg leading-[1.1]">
-                    The Karachi That Lives In Our Hearts :
+                    <TypingAnimation loop={false}>
+                      The Karachi That Lives In Our Hearts :
+                    </TypingAnimation>
                   </h2>
-                  <p className="mt-3 md:mt-4 text-[22px] lg:text-[28px] w-[95%] sm:w-[90%] md:w-[85%] font-light leading-[1.2] drop-shadow-md">
-                    A journey through the city&apos;s origins, culture, and the grace
-                    it once held.
-                  </p>
-                </div>
+
+                  <div className="mt-3 md:mt-4 text-[22px] lg:text-[28px] w-[95%] sm:w-[90%] md:w-[85%] font-light leading-[1.2] drop-shadow-md">
+                    <TextAnimate animation="slideUp" by="word" duration={1}>
+                      A journey through the city's origins, culture, and the grace
+                      it once held.
+                    </TextAnimate>
+                  </div>
+           
               </div>
 
               {/* CTA Button */}
