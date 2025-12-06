@@ -50,6 +50,11 @@ Karach meri jaan - I love you.`,
     quote: "Karachi was founded by a woman named Mai Kolachi, from whom this city inherited its nurturing and kind-hearted spirit. This city welcomes everyone with open arms, regardless of color, creed, status, or religion. It pains me to see my city in this state. I hope that my beloved city heals and thrives once again soon.",
     name: "Syed Talha Ali",
     title: "CEO SEOHUB GROUP"
+  }, 
+  {
+    quote: "Karachi, to me, is a city of unstoppable energy, chaotic but full of heart. It’s a place where diversity, resilience, and opportunity blend together, and I only wish to see it become cleaner, safer, and more united.",
+    name: "Khalid Anwar",
+    title: "Business Unit Head at Tekron Digital"
   },
 ];
 
