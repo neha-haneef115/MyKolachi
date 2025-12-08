@@ -51,7 +51,7 @@ Karach meri jaan - I love you.`,
     name: "Syed Talha Ali",
     title: "CEO SEOHUB GROUP"
   },{
-    quote: "Karachi, to me, is a city of unstoppable energy, chaotic but full of heart. It’s a place where diversity, resilience, and opportunity blend together, and I only wish to see it become cleaner, safer, and more united.",
+    quote: "Karachi, to me, is a city of unstoppable energy, chaotic but full of heart. It’s a place where diversity, resilience, and opportunity blend together, and I only wish to see it become cleaner, safer, and more united..",
     name: "Khalid Anwar",
     title: "Business Unit Head at Tekron Digital"
   },
